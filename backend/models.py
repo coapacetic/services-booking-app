@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, Float, DateTime, Date, Text, DECIMAL
+from sqlalchemy import Column, String, Integer, Float, DateTime, Date, Text, DECIMAL, Boolean
 from sqlalchemy.dialects.postgresql import UUID
 from database import Base
 import uuid
@@ -23,6 +23,12 @@ class OpportunitySnapshot(Base):
     description = Column(Text)
     forecast_category = Column(String(50))
     sync_timestamp = Column(DateTime)
+    in_manager_forecast = Column(Boolean, default=False)
+    stage_number = Column(Integer)
+    stage_name = Column(String(100))
+    delta_average_arr = Column(DECIMAL(15, 2))
+    services_attached_amount = Column(DECIMAL(15, 2))
+    services_next_steps = Column(Text)
     
     @property
     def id_str(self):

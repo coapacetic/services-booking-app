@@ -1,44 +1,55 @@
 import React, { useState, useEffect } from 'react';
-import { formatCurrency } from '../utils/formatters';
 
 const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
-  const [formData, setFormData] = useState({
-    salesforce_id: '',
-    name: '',
-    account_name: '',
-    amount: '',
-    stage: '',
-    probability: '',
-    close_date: '',
-    owner_name: '',
-    type: '',
-    lead_source: '',
-    campaign: '',
-    description: '',
-    forecast_category: '',
-  });
+    const [formData, setFormData] = useState({
+      salesforce_id: '',
+      name: '',
+      account_name: '',
+      amount: '',
+      stage: '',
+      probability: '',
+      close_date: '',
+      owner_name: '',
+      type: '',
+      lead_source: '',
+      campaign: '',
+      description: '',
+      forecast_category: '',
+      in_manager_forecast: false,
+      stage_number: '',
+      stage_name: '',
+      delta_average_arr: '',
+      services_attached_amount: '',
+      services_next_steps: '',
+    });
 
   const [errors, setErrors] = useState({});
 
-  useEffect(() => {
-    if (opportunity && isEditing) {
-      setFormData({
-        salesforce_id: opportunity.salesforce_id || '',
-        name: opportunity.name || '',
-        account_name: opportunity.account_name || '',
-        amount: opportunity.amount || '',
-        stage: opportunity.stage || '',
-        probability: opportunity.probability || '',
-        close_date: opportunity.close_date || '',
-        owner_name: opportunity.owner_name || '',
-        type: opportunity.type || '',
-        lead_source: opportunity.lead_source || '',
-        campaign: opportunity.campaign || '',
-        description: opportunity.description || '',
-        forecast_category: opportunity.forecast_category || '',
-      });
-    }
-  }, [opportunity, isEditing]);
+    useEffect(() => {
+      if (opportunity && isEditing) {
+        setFormData({
+          salesforce_id: opportunity.salesforce_id || '',
+          name: opportunity.name || '',
+          account_name: opportunity.account_name || '',
+          amount: opportunity.amount || '',
+          stage: opportunity.stage || '',
+          probability: opportunity.probability || '',
+          close_date: opportunity.close_date || '',
+          owner_name: opportunity.owner_name || '',
+          type: opportunity.type || '',
+          lead_source: opportunity.lead_source || '',
+          campaign: opportunity.campaign || '',
+          description: opportunity.description || '',
+          forecast_category: opportunity.forecast_category || '',
+          in_manager_forecast: opportunity.in_manager_forecast || false,
+          stage_number: opportunity.stage_number || '',
+          stage_name: opportunity.stage_name || '',
+          delta_average_arr: opportunity.delta_average_arr || '',
+          services_attached_amount: opportunity.services_attached_amount || '',
+          services_next_steps: opportunity.services_next_steps || '',
+        });
+      }
+    }, [opportunity, isEditing]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,18 +79,23 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validateForm()) {
-      const submissionData = {
-        ...formData,
-        amount: formData.amount ? parseFloat(formData.amount) : null,
-        probability: formData.probability ? parseInt(formData.probability) : null,
-        close_date: formData.close_date || null,
-      };
-      onSubmit(submissionData);
-    }
-  };
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      if (validateForm()) {
+        const submissionData = {
+          ...formData,
+          amount: formData.amount ? parseFloat(formData.amount) : null,
+          probability: formData.probability ? parseInt(formData.probability) : null,
+          close_date: formData.close_date || null,
+          stage_number: formData.stage_number ? parseInt(formData.stage_number) : null,
+          delta_average_arr: formData.delta_average_arr ? parseFloat(formData.delta_average_arr) : null,
+          services_attached_amount: formData.services_attached_amount ? parseFloat(formData.services_attached_amount) : null,
+          services_next_steps: formData.services_next_steps || null,
+          stage_name: formData.stage_name || null,
+        };
+        onSubmit(submissionData);
+      }
+    };
 
   const stages = [
     'Prospecting',
@@ -321,21 +337,115 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Description
-              </label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-              />
-            </div>
-          </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Description
+                        </label>
+                        <textarea
+                          name="description"
+                          value={formData.description}
+                          onChange={handleChange}
+                          rows={4}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        />
+                      </div>
+                    </div>
 
-          <div className="flex justify-end space-x-4">
+                    {/* Services & Forecasting */}
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-medium text-gray-900">Services & Forecasting</h3>
+            
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="flex items-center">
+                          <input
+                            type="checkbox"
+                            name="in_manager_forecast"
+                            checked={formData.in_manager_forecast}
+                            onChange={(e) => setFormData(prev => ({ ...prev, in_manager_forecast: e.target.checked }))}
+                            className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                          />
+                          <label className="ml-2 block text-sm font-medium text-gray-700">
+                            In Manager Forecast
+                          </label>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Stage Number
+                          </label>
+                          <input
+                            type="number"
+                            name="stage_number"
+                            value={formData.stage_number}
+                            onChange={handleChange}
+                            placeholder="1-10"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Stage Name
+                          </label>
+                          <input
+                            type="text"
+                            name="stage_name"
+                            value={formData.stage_name}
+                            onChange={handleChange}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Delta Average ARR
+                          </label>
+                          <input
+                            type="number"
+                            name="delta_average_arr"
+                            value={formData.delta_average_arr}
+                            onChange={handleChange}
+                            step="0.01"
+                            placeholder="0.00"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Services + Attached Services Amount
+                          </label>
+                          <input
+                            type="number"
+                            name="services_attached_amount"
+                            value={formData.services_attached_amount}
+                            onChange={handleChange}
+                            step="0.01"
+                            placeholder="0.00"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Services Next Steps
+                        </label>
+                        <textarea
+                          name="services_next_steps"
+                          value={formData.services_next_steps}
+                          onChange={handleChange}
+                          rows={3}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex justify-end space-x-4">
             <button
               type="button"
               onClick={onCancel}

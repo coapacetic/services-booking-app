@@ -20,7 +20,13 @@ CREATE TABLE opportunity_snapshots (
     campaign VARCHAR(255),
     description TEXT,
     forecast_category VARCHAR(50),
-    sync_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    sync_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    in_manager_forecast BOOLEAN DEFAULT FALSE,
+    stage_number INTEGER,
+    stage_name VARCHAR(100),
+    delta_average_arr DECIMAL(15,2),
+    services_attached_amount DECIMAL(15,2),
+    services_next_steps TEXT
 );
 
 -- Indexes for performance

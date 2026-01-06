@@ -21,6 +21,12 @@ class OpportunitySnapshotBase(BaseModel):
     description: Optional[str] = None
     forecast_category: Optional[str] = Field(None, max_length=50)
     sync_timestamp: Optional[datetime] = None
+    in_manager_forecast: Optional[bool] = False
+    stage_number: Optional[int] = None
+    stage_name: Optional[str] = Field(None, max_length=100)
+    delta_average_arr: Optional[Decimal] = None
+    services_attached_amount: Optional[Decimal] = None
+    services_next_steps: Optional[str] = None
 
 class OpportunitySnapshotCreate(OpportunitySnapshotBase):
     pass

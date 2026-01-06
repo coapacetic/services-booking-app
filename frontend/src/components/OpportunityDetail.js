@@ -11,20 +11,28 @@ const OpportunityDetail = ({ opportunity, onEdit, onClose }) => {
     );
   }
 
-  const fields = [
-    { label: 'Salesforce ID', value: opportunity.salesforce_id },
-    { label: 'Opportunity Name', value: opportunity.name },
-    { label: 'Account Name', value: opportunity.account_name || 'N/A' },
-    { label: 'Amount', value: formatCurrency(opportunity.amount) },
-    { label: 'Stage', value: opportunity.stage, isBadge: true },
-    { label: 'Probability', value: opportunity.probability ? `${opportunity.probability}%` : 'N/A', isColored: true },
-    { label: 'Close Date', value: formatDate(opportunity.close_date) },
-    { label: 'Owner', value: opportunity.owner_name || 'N/A' },
-    { label: 'Type', value: opportunity.type || 'N/A' },
-    { label: 'Lead Source', value: opportunity.lead_source || 'N/A' },
-    { label: 'Campaign', value: opportunity.campaign || 'N/A' },
-    { label: 'Forecast Category', value: opportunity.forecast_category || 'N/A' },
-  ];
+    const fields = [
+      { label: 'Salesforce ID', value: opportunity.salesforce_id },
+      { label: 'Opportunity Name', value: opportunity.name },
+      { label: 'Account Name', value: opportunity.account_name || 'N/A' },
+      { label: 'Amount', value: formatCurrency(opportunity.amount) },
+      { label: 'Stage', value: opportunity.stage, isBadge: true },
+      { label: 'Probability', value: opportunity.probability ? `${opportunity.probability}%` : 'N/A', isColored: true },
+      { label: 'Close Date', value: formatDate(opportunity.close_date) },
+      { label: 'Owner', value: opportunity.owner_name || 'N/A' },
+      { label: 'Type', value: opportunity.type || 'N/A' },
+      { label: 'Lead Source', value: opportunity.lead_source || 'N/A' },
+      { label: 'Campaign', value: opportunity.campaign || 'N/A' },
+      { label: 'Forecast Category', value: opportunity.forecast_category || 'N/A' },
+    ];
+
+    const servicesFields = [
+      { label: 'In Manager Forecast', value: opportunity.in_manager_forecast ? 'Yes' : 'No', isBoolean: true },
+      { label: 'Stage Number', value: opportunity.stage_number || 'N/A' },
+      { label: 'Stage Name', value: opportunity.stage_name || 'N/A' },
+      { label: 'Delta Average ARR', value: formatCurrency(opportunity.delta_average_arr) },
+      { label: 'Services + Attached Services Amount', value: formatCurrency(opportunity.services_attached_amount) },
+    ];
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -112,17 +120,56 @@ const OpportunityDetail = ({ opportunity, onEdit, onClose }) => {
           </div>
         </div>
 
-        {/* Description */}
-        {opportunity.description && (
-          <div className="mt-8">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Description</h3>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <p className="text-gray-700 whitespace-pre-wrap">{opportunity.description}</p>
-            </div>
-          </div>
-        )}
+                {/* Description */}
+                {opportunity.description && (
+                  <div className="mt-8">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Description</h3>
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <p className="text-gray-700 whitespace-pre-wrap">{opportunity.description}</p>
+                    </div>
+                  </div>
+                )}
 
-        {/* Timestamps */}
+                {/* Services & Forecasting */}
+                <div className="mt-8">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Services & Forecasting</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <dl className="space-y-3">
+                      {servicesFields.slice(0, 3).map((field) => (
+                        <div key={field.label} className="flex justify-between py-2 border-b border-gray-100">
+                          <dt className="text-sm font-medium text-gray-600">{field.label}</dt>
+                          <dd className="text-sm text-gray-900 text-right">
+                            {field.isBoolean ? (
+                              <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${field.value === 'Yes' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
+                                {field.value}
+                              </span>
+                            ) : (
+                              field.value
+                            )}
+                          </dd>
+                        </div>
+                      ))}
+                    </dl>
+                    <dl className="space-y-3">
+                      {servicesFields.slice(3).map((field) => (
+                        <div key={field.label} className="flex justify-between py-2 border-b border-gray-100">
+                          <dt className="text-sm font-medium text-gray-600">{field.label}</dt>
+                          <dd className="text-sm text-gray-900 text-right">{field.value}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </div>
+                  {opportunity.services_next_steps && (
+                    <div className="mt-4">
+                      <p className="text-sm font-medium text-gray-600 mb-2">Services Next Steps</p>
+                      <div className="bg-gray-50 p-4 rounded-lg">
+                        <p className="text-gray-700 whitespace-pre-wrap">{opportunity.services_next_steps}</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Timestamps */}
         <div className="mt-8 pt-6 border-t border-gray-200">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-500">
             <div>
