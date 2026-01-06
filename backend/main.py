@@ -1,0 +1,157 @@
+from fastapi import FastAPI, Depends, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import Session
+from sqlalchemy import func
+from typing import List, Optional
+from datetime import datetime, date
+import os
+
+from database import SessionLocal, engine, Base
+from models import OpportunitySnapshot
+from schemas import OpportunitySnapshotCreate, OpportunitySnapshotResponse, OpportunityStats
+
+Base.metadata.create_all(bind=engine)
+
+app = FastAPI(
+    title="Opportunity Management API",
+    description="API for managing Salesforce opportunity snapshots",
+    version="1.0.0"
+)
+
+# CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Dependency to get DB session
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+@app.get("/")
+def root():
+    return {"message": "Opportunity Management API", "version": "1.0.0"}
+
+@app.get("/opportunities", response_model=List[OpportunitySnapshotResponse])
+def get_opportunities(
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=1000),
+    stage: Optional[str] = None,
+    account_name: Optional[str] = None,
+    min_amount: Optional[float] = None,
+    max_amount: Optional[float] = None,
+    db: Session = Depends(get_db)
+):
+    query = db.query(OpportunitySnapshot)
+    
+    if stage:
+        query = query.filter(OpportunitySnapshot.stage.ilike(f"%{stage}%"))
+    if account_name:
+        query = query.filter(OpportunitySnapshot.account_name.ilike(f"%{account_name}%"))
+    if min_amount:
+        query = query.filter(OpportunitySnapshot.amount >= min_amount)
+    if max_amount:
+        query = query.filter(OpportunitySnapshot.amount <= max_amount)
+    
+    opportunities = query.offset(skip).limit(limit).all()
+    return opportunities
+
+@app.get("/opportunities/{opportunity_id}", response_model=OpportunitySnapshotResponse)
+def get_opportunity(opportunity_id: str, db: Session = Depends(get_db)):
+    opportunity = db.query(OpportunitySnapshot).filter(
+        OpportunitySnapshot.salesforce_id == opportunity_id
+    ).first()
+    if not opportunity:
+        raise HTTPException(status_code=404, detail="Opportunity not found")
+    return opportunity
+
+@app.post("/opportunities", response_model=OpportunitySnapshotResponse)
+def create_opportunity(
+    opportunity: OpportunitySnapshotCreate, 
+    db: Session = Depends(get_db)
+):
+    db_opportunity = OpportunitySnapshot(**opportunity.dict())
+    db.add(db_opportunity)
+    db.commit()
+    db.refresh(db_opportunity)
+    return db_opportunity
+
+@app.put("/opportunities/{opportunity_id}", response_model=OpportunitySnapshotResponse)
+def update_opportunity(
+    opportunity_id: str, 
+    opportunity_update: OpportunitySnapshotCreate,
+    db: Session = Depends(get_db)
+):
+    db_opportunity = db.query(OpportunitySnapshot).filter(
+        OpportunitySnapshot.salesforce_id == opportunity_id
+    ).first()
+    if not db_opportunity:
+        raise HTTPException(status_code=404, detail="Opportunity not found")
+    
+    for field, value in opportunity_update.dict().items():
+        setattr(db_opportunity, field, value)
+    
+    db.commit()
+    db.refresh(db_opportunity)
+    return db_opportunity
+
+@app.delete("/opportunities/{opportunity_id}")
+def delete_opportunity(opportunity_id: str, db: Session = Depends(get_db)):
+    db_opportunity = db.query(OpportunitySnapshot).filter(
+        OpportunitySnapshot.salesforce_id == opportunity_id
+    ).first()
+    if not db_opportunity:
+        raise HTTPException(status_code=404, detail="Opportunity not found")
+    
+    db.delete(db_opportunity)
+    db.commit()
+    return {"message": "Opportunity deleted successfully"}
+
+@app.get("/stats", response_model=OpportunityStats)
+def get_opportunity_stats(db: Session = Depends(get_db)):
+    total_opportunities = db.query(OpportunitySnapshot).count()
+    
+    total_value = db.query(OpportunitySnapshot.amount).filter(
+        OpportunitySnapshot.amount.isnot(None)
+    ).all()
+    total_amount = sum(value[0] for value in total_value if value[0])
+    
+    # Stage distribution
+    stage_stats = db.query(
+        OpportunitySnapshot.stage,
+        func.count(OpportunitySnapshot.id).label('count'),
+        func.sum(OpportunitySnapshot.amount).label('total_amount')
+    ).group_by(OpportunitySnapshot.stage).all()
+    
+    stage_distribution = {
+        stage: {
+            "count": count,
+            "total_amount": float(total_amount) if total_amount else 0.0
+        }
+        for stage, count, total_amount in stage_stats
+    }
+    
+    # Recent opportunities (last 30 days)
+    from datetime import timedelta
+    thirty_days_ago = datetime.now() - timedelta(days=30)
+    recent_opportunities = db.query(OpportunitySnapshot).filter(
+        OpportunitySnapshot.sync_timestamp >= thirty_days_ago
+    ).count()
+    
+    return OpportunityStats(
+        total_opportunities=total_opportunities,
+        total_amount=total_amount,
+        stage_distribution=stage_distribution,
+        recent_opportunities=recent_opportunities
+    )
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
