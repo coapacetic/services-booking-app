@@ -94,6 +94,14 @@ const Dashboard = () => {
     .sort((a, b) => new Date(b.sync_timestamp) - new Date(a.sync_timestamp))
     .slice(0, 5);
 
+  const topDeals = opportunities
+    .filter(opp => 
+      opp.amount > 100000 && 
+      opp.stage && 
+      !opp.stage.toLowerCase().includes('closed')
+    )
+    .sort((a, b) => b.amount - a.amount);
+
   return (
     <div className="space-y-6">
       {/* Stats Cards */}
@@ -186,6 +194,59 @@ const Dashboard = () => {
               }} 
             />
           </div>
+        </div>
+      </div>
+
+      {/* Top Deals */}
+      <div className="card">
+        <h3 className="text-lg font-semibold mb-4">Top Deals</h3>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Name
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Account
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Amount
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Stage
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {topDeals.length > 0 ? (
+                topDeals.map((opportunity) => (
+                  <tr key={opportunity.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {opportunity.name}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {opportunity.account_name || 'N/A'}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {formatCurrency(opportunity.amount)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                        {opportunity.stage || 'N/A'}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" className="px-6 py-4 text-center text-sm text-gray-500">
+                    No open opportunities over $100,000
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
 
