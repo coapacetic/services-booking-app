@@ -90,7 +90,7 @@ dist/
 /backend/__pycache__/
 *.py[cod]
 *$py.class
-frontend/package-lock.json
+/frontend/package-lock.json
 
 # Virtual environments
 /backend/venv/
