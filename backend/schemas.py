@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, field_serializer
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 from datetime import datetime, date
 from decimal import Decimal
 import uuid
@@ -42,5 +42,14 @@ class OpportunityStats(BaseModel):
     total_services_amount: float
     stage_distribution: Dict[str, Dict[str, Any]]
     recent_opportunities: int
-    services_logo_attach_rate: float
-    services_dollar_attach_rate: float
+
+class DealNeedingAttentionResponse(OpportunitySnapshotBase):
+    id: uuid.UUID
+    tags: List[str]
+    
+    @field_serializer('id')
+    def serialize_id(self, value: uuid.UUID) -> str:
+        return str(value) if value else None
+    
+    class Config:
+        from_attributes = True
