@@ -95,6 +95,14 @@ const Dashboard = () => {
     .sort((a, b) => new Date(b._sync_timestamp) - new Date(a._sync_timestamp))
     .slice(0, 5);
 
+  const topDeals = opportunities
+    .filter(opp => {
+      const stageNum = parseInt(opp.stage_number, 10);
+      return !isNaN(stageNum) && stageNum >= 3;
+    })
+    .sort((a, b) => b.delta_average_arr - a.delta_average_arr)
+    .slice(0, 5);
+
   return (
     <div className="space-y-6">
       {/* Stats Cards */}
@@ -227,9 +235,67 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {/* Top Deals */}
+      <div className="card">
+        <h3 className="text-lg font-semibold mb-4">Top Deals</h3>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Opportunity Name
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Delta Average ARR
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Services Amount
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Stage
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Services Next Steps
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {topDeals.length > 0 ? (
+                topDeals.map((opportunity) => (
+                  <tr key={opportunity.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {opportunity.opportunity_name}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {formatCurrency(opportunity.delta_average_arr)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {formatCurrency(opportunity.services_attached_amount)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                        {opportunity.stage_number || 'N/A'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-500">
+                      {opportunity.services_next_steps || 'N/A'}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" className="px-6 py-4 text-center text-sm text-gray-500">
+                    No deals in stage 3 or later
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       {/* Deals Needing Attention */}
       <DealsNeedingAttention />
-
       {/* Recent Opportunities */}
       <div className="card">
         <h3 className="text-lg font-semibold mb-4">Recent Opportunities</h3>
