@@ -4,3 +4,33 @@ opportunty_id,account_id,opportunity_name,account_name,close_date,delta_average_
 001000000000003,ACC003,Managed Services Contract,Global Industries,2024-08-01,500000.00,75000.00,3,Commit,SOW review,Mike Johnson,Mike Johnson,Existing Business
 001000000000004,ACC004,Security Assessment,StartUp LLC,2024-04-20,75000.00,0.00,4,Commit,Final proposal,Sarah Wilson,Sarah Wilson,New Business
 001000000000005,ACC005,Data Analytics Platform,Enterprise Corp,2024-03-15,350000.00,0.00,5,Closed,Implementation planning,Tom Brown,Tom Brown,New Business
+001000000000006,ACC006,ERP Implementation,MegaCorp Inc,2024-06-25,450000.00,125000.00,4,Commit,Contract review,David Lee,David Lee,Existing Business
+001000000000007,ACC007,Cloud Security Suite,SecureNet Systems,2024-06-28,180000.00,25000.00,3,Commit,SOW preparation,Lisa Chen,Lisa Chen,New Business
+001000000000008,ACC008,Data Warehouse Migration,BigData Analytics,2024-06-30,320000.00,80000.00,4,Commit,Legal review,Robert Kim,Robert Kim,New Business
+001000000000009,ACC009,AI Platform Integration,SmartTech Solutions,2024-06-29,275000.00,0.00,3,Commit,Technical validation,Amanda Foster,Amanda Foster,Existing Business
+001000000000010,ACC010,Cybersecurity Assessment,Financial Services Co,2024-06-27,95000.00,15000.00,4,Commit,Proposal finalization,Michael Torres,Michael Torres,New Business
+001000000000011,ACC011,DevOps Transformation,Agile Enterprises,2024-06-26,380000.00,95000.00,4,Commit,Pricing negotiation,Jennifer Wu,Jennifer Wu,Existing Business
+001000000000012,ACC012,Mobile App Development,Retail Innovations,2024-06-30,165000.00,35000.00,4,Commit,Client sign-off,Carlos Rodriguez,Carlos Rodriguez,New Business
+001000000000013,ACC013,Network Infrastructure Upgrade,Telecom Giant,2024-06-28,520000.00,130000.00,4,Commit,Final terms review,Patricia O'Brien,Patricia O'Brien,Existing Business
+001000000000014,ACC014,Machine Learning Pipeline,HealthTech Solutions,2024-06-29,295000.00,60000.00,3,Commit,Data requirements,Steven Park,Steven Park,New Business
+001000000000015,ACC015,Compliance Management System,Regulatory Corp,2024-06-30,225000.00,45000.00,4,Commit,Compliance review,Nancy Thompson,Nancy Thompson,Existing Business
+001000000000016,ACC016,Digital Transformation Roadmap,Manufacturing Plus,2024-06-25,680000.00,170000.00,5,Closed,Implementation kickoff,William Harris,William Harris,New Business
+001000000000017,ACC017,Cloud Cost Optimization,SaaS Company,2024-06-29,145000.00,0.00,3,Commit,Cost analysis,Barbara White,Barbara White,Existing Business
+001000000000018,ACC018,Customer Experience Platform,Retail Chain,2024-06-30,410000.00,102500.00,4,Commit,UX review,James Wilson,James Wilson,New Business
+001000000000019,ACC019,Supply Chain Automation,Logistics Pro,2024-06-28,360000.00,90000.00,4,Commit,Integration planning,George Martinez,George Martinez,Existing Business
+001000000000020,ACC020,Fraud Detection System,Banking Solutions,2024-06-27,580000.00,145000.00,5,Closed,Deployment phase,Elizabeth Taylor,Elizabeth Taylor,New Business
+001000000000021,ACC021,API Gateway Services,Tech Startup,2024-06-30,125000.00,25000.00,3,Commit,API documentation,Christopher Lee,Christopher Lee,New Business
+001000000000022,ACC022,BI Dashboard Implementation,Consulting Firm,2024-06-29,195000.00,48000.00,4,Commit,Dashboard testing,Margaret Davis,Margaret Davis,Existing Business
+001000000000023,ACC023,Container Orchestration,Software Company,2024-06-26,285000.00,71000.00,4,Commit,Kubernetes setup,Joseph Moore,Joseph Moore,New Business
+001000000000024,ACC024,Payment Gateway Integration,E-commerce Platform,2024-06-30,155000.00,38000.00,4,Commit,Security audit,Dorothy Miller,Dorothy Miller,Existing Business
+001000000000025,ACC025,HR Information System,HR Solutions Inc,2024-06-28,245000.00,61000.00,3,Commit,Requirements gathering,Paul Anderson,Paul Anderson,New Business
+001000000000026,ACC026,Real Estate Management Platform,Property Tech,2024-06-29,335000.00,84000.00,4,Commit,Platform demo,Mark Thomas,Mark Thomas,Existing Business
+001000000000027,ACC027,Video Streaming Infrastructure,Media Company,2024-06-30,425000.00,106000.00,5,Closed,Content delivery setup,Donald Jackson,Donald Jackson,New Business
+001000000000028,ACC028,Blockchain Supply Chain,Logistics Innovations,2024-06-27,265000.00,0.00,3,Commit,Blockchain validation,Michelle White,Michelle White,New Business
+001000000000029,ACC029,IoT Sensor Network,Smart Cities Tech,2024-06-30,545000.00,136000.00,5,Closed,Sensor deployment,Richard Harris,Richard Harris,Existing Business
+001000000000030,ACC030,Legal Practice Management,Law Firm Partners,2024-06-29,175000.00,43000.00,4,Commit,Compliance check,Brian Martin,Brian Martin,New Business
+001000000000031,ACC031,Energy Management System,Utilities Corp,2024-06-28,395000.00,98000.00,4,Commit,Energy audit,Kevin Thompson,Kevin Thompson,Existing Business
+001000000000032,ACC032,Educational Platform,EduTech Solutions,2024-06-30,215000.00,54000.00,3,Commit,Curriculum integration,Jason Garcia,Jason Garcia,New Business
+001000000000033,ACC033,Risk Management Framework,Insurance Company,2024-06-27,465000.00,116000.00,5,Closed,Risk assessment,Timothy Martinez,Timothy Martinez,Existing Business
+001000000000034,ACC034,Marketing Automation Platform,Digital Agency,2024-06-29,185000.00,46000.00,4,Commit,Campaign setup,Jeremy Robinson,Jeremy Robinson,New Business
+001000000000035,ACC035,Financial Planning Software,Wealth Management,2024-06-30,345000.00,86000.00,5,Closed,Client onboarding,Scott Clark,Scott Clark,Existing Business
