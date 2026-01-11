@@ -27,11 +27,11 @@ class OpportunitySnapshotCreate(OpportunitySnapshotBase):
 
 class OpportunitySnapshotResponse(OpportunitySnapshotBase):
     id: uuid.UUID
-    
+
     @field_serializer('id')
     def serialize_id(self, value: uuid.UUID) -> str:
         return str(value) if value else None
-    
+
     class Config:
         from_attributes = True
 
@@ -42,3 +42,5 @@ class OpportunityStats(BaseModel):
     total_services_amount: float
     stage_distribution: Dict[str, Dict[str, Any]]
     recent_opportunities: int
+    services_logo_attach_rate: float
+    services_dollar_attach_rate: float
