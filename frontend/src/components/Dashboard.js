@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getOpportunityStats, getOpportunities } from '../services/api';
 import { formatCurrency } from '../utils/formatters';
+import DealsNeedingAttention from './DealsNeedingAttention';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -95,12 +96,12 @@ const Dashboard = () => {
     .slice(0, 5);
 
   const topDeals = opportunities
-    .filter(opp => 
-      opp.delta_average_arr > 100000 && 
-      opp.stage_number && 
-      !opp.stage_number.toLowerCase().includes('closed')
-    )
-    .sort((a, b) => b.delta_average_arr - a.delta_average_arr);
+    .filter(opp => {
+      const stageNum = parseInt(opp.stage_number, 10);
+      return !isNaN(stageNum) && stageNum >= 3;
+    })
+    .sort((a, b) => b.delta_average_arr - a.delta_average_arr)
+    .slice(0, 5);
 
   return (
     <div className="space-y-6">
@@ -165,6 +166,43 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {/* Services Attach Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="card">
+          <div className="flex items-center">
+            <div className="flex-1">
+              <p className="text-sm font-medium text-gray-600">Services Logo Attach Rate (Stage 3+)</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {stats.services_logo_attach_rate?.toFixed(1) ?? '0.0'}%
+              </p>
+              <p className="text-xs text-gray-500 mt-1">Opportunities with services / Total opportunities</p>
+            </div>
+            <div className="ml-4">
+              <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
+                <span className="text-indigo-600 font-bold">🎯</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="card">
+          <div className="flex items-center">
+            <div className="flex-1">
+              <p className="text-sm font-medium text-gray-600">Services Dollar Attach Rate (Stage 3+)</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {stats.services_dollar_attach_rate?.toFixed(1) ?? '0.0'}%
+              </p>
+              <p className="text-xs text-gray-500 mt-1">Services amount / Delta average ARR</p>
+            </div>
+            <div className="ml-4">
+              <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center">
+                <span className="text-teal-600 font-bold">💵</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="card">
@@ -205,16 +243,19 @@ const Dashboard = () => {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Name
+                  Opportunity Name
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Account
+                  Delta Average ARR
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Amount
+                  Services Amount
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Stage
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Services Next Steps
                 </th>
               </tr>
             </thead>
@@ -226,22 +267,25 @@ const Dashboard = () => {
                       {opportunity.opportunity_name}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {opportunity.account_name || 'N/A'}
+                      {formatCurrency(opportunity.delta_average_arr)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {formatCurrency(opportunity.delta_average_arr)}
+                      {formatCurrency(opportunity.services_attached_amount)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                         {opportunity.stage_number || 'N/A'}
                       </span>
                     </td>
+                    <td className="px-6 py-4 text-sm text-gray-500">
+                      {opportunity.services_next_steps || 'N/A'}
+                    </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="4" className="px-6 py-4 text-center text-sm text-gray-500">
-                    No open opportunities over $100,000
+                  <td colSpan="5" className="px-6 py-4 text-center text-sm text-gray-500">
+                    No deals in stage 3 or later
                   </td>
                 </tr>
               )}
@@ -250,6 +294,8 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {/* Deals Needing Attention */}
+      <DealsNeedingAttention />
       {/* Recent Opportunities */}
       <div className="card">
         <h3 className="text-lg font-semibold mb-4">Recent Opportunities</h3>

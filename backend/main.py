@@ -8,7 +8,7 @@ import os
 
 from database import SessionLocal, engine, Base
 from models import OpportunitySnapshot
-from schemas import OpportunitySnapshotCreate, OpportunitySnapshotResponse, OpportunityStats
+from schemas import OpportunitySnapshotCreate, OpportunitySnapshotResponse, OpportunityStats, DealNeedingAttentionResponse
 
 Base.metadata.create_all(bind=engine)
 
@@ -154,6 +154,46 @@ def get_opportunity_stats(db: Session = Depends(get_db)):
         OpportunitySnapshot._sync_timestamp >= thirty_days_ago
     ).count()
     
+    # Services attach metrics for Stage 3 or later
+    stage_3_plus_stages = ["3", "4", "5"]
+    
+    # Total opportunities in stage 3+
+    total_opps_stage_3_plus = db.query(OpportunitySnapshot).filter(
+        OpportunitySnapshot.stage_number.in_(stage_3_plus_stages)
+    ).count()
+    
+    # Opportunities with services in stage 3+
+    opps_with_services_stage_3_plus = db.query(OpportunitySnapshot).filter(
+        OpportunitySnapshot.stage_number.in_(stage_3_plus_stages),
+        OpportunitySnapshot.services_attached_amount > 0
+    ).count()
+    
+    # Services Logo Attach Rate: (opps with services in stage 3+) / (total opps in stage 3+)
+    services_logo_attach_rate = 0.0
+    if total_opps_stage_3_plus > 0:
+        services_logo_attach_rate = (opps_with_services_stage_3_plus / total_opps_stage_3_plus) * 100
+    
+    # Total services amount in stage 3+
+    services_amount_stage_3_plus = db.query(
+        func.sum(OpportunitySnapshot.services_attached_amount)
+    ).filter(
+        OpportunitySnapshot.stage_number.in_(stage_3_plus_stages),
+        OpportunitySnapshot.services_attached_amount.isnot(None)
+    ).scalar() or 0
+    
+    # Total delta average ARR in stage 3+
+    delta_arr_stage_3_plus = db.query(
+        func.sum(OpportunitySnapshot.delta_average_arr)
+    ).filter(
+        OpportunitySnapshot.stage_number.in_(stage_3_plus_stages),
+        OpportunitySnapshot.delta_average_arr.isnot(None)
+    ).scalar() or 0
+    
+    # Services Dollar Attach Rate: (total services amount in stage 3+) / (total delta ARR in stage 3+)
+    services_dollar_attach_rate = 0.0
+    if delta_arr_stage_3_plus > 0:
+        services_dollar_attach_rate = (float(services_amount_stage_3_plus) / float(delta_arr_stage_3_plus)) * 100
+    
     return OpportunityStats(
         total_opportunities=total_opportunities,
         total_opportunities_with_services=total_opportunities_with_services,
@@ -161,7 +201,68 @@ def get_opportunity_stats(db: Session = Depends(get_db)):
         total_services_amount=total_services_amount,
         stage_distribution=stage_distribution,
         recent_opportunities=recent_opportunities,
+        services_logo_attach_rate=services_logo_attach_rate,
+        services_dollar_attach_rate=services_dollar_attach_rate,
     )
+
+@app.get("/deals-needing-attention", response_model=List[DealNeedingAttentionResponse])
+def get_deals_needing_attention(db: Session = Depends(get_db)):
+    """
+    Get deals in stage 3 or later with high ARR (>= 100,000) that need attention.
+    Returns deals that either:
+    1. Have no next step notes (tagged as "Needs notes")
+    2. Have no services attached (tagged as "Needs services")
+    """
+    MIN_ARR = 100000
+    MIN_STAGE = 3
+    
+    query = db.query(OpportunitySnapshot).filter(
+        OpportunitySnapshot.delta_average_arr >= MIN_ARR
+    )
+    
+    all_opportunities = query.all()
+    
+    deals_needing_attention = []
+    for opp in all_opportunities:
+        try:
+            stage_num = int(opp.stage_number) if opp.stage_number else 0
+        except (ValueError, TypeError):
+            stage_num = 0
+        
+        if stage_num < MIN_STAGE:
+            continue
+        
+        tags = []
+        
+        needs_notes = not opp.services_next_steps or opp.services_next_steps.strip() == ""
+        if needs_notes:
+            tags.append("Needs notes")
+        
+        needs_services = not opp.services_attached_amount or float(opp.services_attached_amount) <= 0
+        if needs_services:
+            tags.append("Needs services")
+        
+        if tags:
+            deal_data = {
+                "id": opp.id,
+                "opportunty_id": opp.opportunty_id,
+                "account_id": opp.account_id,
+                "opportunity_name": opp.opportunity_name,
+                "account_name": opp.account_name,
+                "close_date": opp.close_date,
+                "delta_average_arr": opp.delta_average_arr,
+                "services_attached_amount": opp.services_attached_amount,
+                "stage_number": opp.stage_number,
+                "forecast_category": opp.forecast_category,
+                "services_next_steps": opp.services_next_steps,
+                "ps_manager_name": opp.ps_manager_name,
+                "owner_name": opp.owner_name,
+                "opportunity_type": opp.opportunity_type,
+                "tags": tags,
+            }
+            deals_needing_attention.append(deal_data)
+    
+    return deals_needing_attention
 
 if __name__ == "__main__":
     import uvicorn
