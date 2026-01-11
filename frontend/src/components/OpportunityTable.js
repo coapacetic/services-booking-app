@@ -48,7 +48,7 @@ const OpportunityTable = ({ onEdit, onView }) => {
     if (window.confirm('Are you sure you want to delete this opportunity?')) {
       try {
         await deleteOpportunity(id);
-        setOpportunities(prev => prev.filter(opp => opp.salesforce_id !== id));
+        setOpportunities(prev => prev.filter(opp => opp.opportunty_id !== id));
       } catch (err) {
         console.error('Error deleting opportunity:', err);
         alert('Failed to delete opportunity');
@@ -116,13 +116,13 @@ const OpportunityTable = ({ onEdit, onView }) => {
                 Account
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Amount
+                Delta ARR
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Services Amount
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Stage
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Probability
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Close Date
@@ -139,22 +139,20 @@ const OpportunityTable = ({ onEdit, onView }) => {
             {opportunities.map((opportunity) => (
               <tr key={opportunity.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  {opportunity.name}
+                  {opportunity.opportunity_name}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {opportunity.account_name || 'N/A'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {formatCurrency(opportunity.amount)}
+                  {formatCurrency(opportunity.delta_average_arr)}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {formatCurrency(opportunity.services_attached_amount)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStageColor(opportunity.stage)}`}>
-                    {opportunity.stage || 'N/A'}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm">
-                  <span className={`font-medium ${getProbabilityColor(opportunity.probability)}`}>
-                    {opportunity.probability}%
+                  <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStageColor(opportunity.stage_number)}`}>
+                    {opportunity.stage_number || 'N/A'}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -177,7 +175,7 @@ const OpportunityTable = ({ onEdit, onView }) => {
                     <PencilIcon className="h-5 w-5" />
                   </button>
                   <button
-                    onClick={() => handleDelete(opportunity.salesforce_id)}
+                    onClick={() => handleDelete(opportunity.opportunty_id)}
                     className="text-red-600 hover:text-red-900"
                   >
                     <TrashIcon className="h-5 w-5" />

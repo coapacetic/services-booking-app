@@ -91,7 +91,7 @@ const Dashboard = () => {
   };
 
   const recentOpportunities = opportunities
-    .sort((a, b) => new Date(b.sync_timestamp) - new Date(a.sync_timestamp))
+    .sort((a, b) => new Date(b._sync_timestamp) - new Date(a._sync_timestamp))
     .slice(0, 5);
 
   const topDeals = opportunities
@@ -137,8 +137,8 @@ const Dashboard = () => {
         <div className="card">
           <div className="flex items-center">
             <div className="flex-1">
-              <p className="text-sm font-medium text-gray-600">Recent (30 days)</p>
-              <p className="text-2xl font-bold text-gray-900">{stats.recent_opportunities}</p>
+              <p className="text-sm font-medium text-gray-600">Total Opps with Services</p>
+              <p className="text-2xl font-bold text-gray-900">{stats.total_opportunities_with_services}</p>
             </div>
             <div className="ml-4">
               <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
@@ -151,9 +151,9 @@ const Dashboard = () => {
         <div className="card">
           <div className="flex items-center">
             <div className="flex-1">
-              <p className="text-sm font-medium text-gray-600">Avg. Deal Size</p>
+              <p className="text-sm font-medium text-gray-600">Total Services Amount</p>
               <p className="text-2xl font-bold text-gray-900">
-                {formatCurrency(stats.total_opportunities > 0 ? stats.total_amount / stats.total_opportunities : 0)}
+                {formatCurrency(stats.total_services_amount)}
               </p>
             </div>
             <div className="ml-4">
@@ -264,7 +264,7 @@ const Dashboard = () => {
                   Account
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Amount
+                  Delta ARR
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Stage
@@ -278,21 +278,21 @@ const Dashboard = () => {
               {recentOpportunities.map((opportunity) => (
                 <tr key={opportunity.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {opportunity.name}
+                    {opportunity.opportunity_name}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {opportunity.account_name || 'N/A'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {formatCurrency(opportunity.amount)}
+                    {formatCurrency(opportunity.delta_average_arr)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                      {opportunity.stage || 'N/A'}
+                      {opportunity.stage_number || 'N/A'}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(opportunity.sync_timestamp).toLocaleDateString()}
+                    {new Date(opportunity._sync_timestamp).toLocaleDateString()}
                   </td>
                 </tr>
               ))}
