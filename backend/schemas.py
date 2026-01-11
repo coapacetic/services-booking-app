@@ -42,5 +42,5 @@ class OpportunityStats(BaseModel):
     total_services_amount: float
     stage_distribution: Dict[str, Dict[str, Any]]
     recent_opportunities: int
-step    services_logo_attach_rate: float
+    services_logo_attach_rate: float
     services_dollar_attach_rate: float
