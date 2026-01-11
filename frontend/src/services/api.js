@@ -35,4 +35,9 @@ export const getOpportunityStats = () => {
   return api.get('/stats');
 };
 
+// Deals needing attention endpoint
+export const getDealsNeedingAttention = () => {
+  return api.get('/deals-needing-attention');
+};
+
 export default api;

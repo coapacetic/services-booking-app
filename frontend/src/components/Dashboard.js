@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getOpportunityStats, getOpportunities } from '../services/api';
 import { formatCurrency } from '../utils/formatters';
+import DealsNeedingAttention from './DealsNeedingAttention';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -188,6 +189,9 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* Deals Needing Attention */}
+      <DealsNeedingAttention />
 
       {/* Recent Opportunities */}
       <div className="card">

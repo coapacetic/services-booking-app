@@ -8,7 +8,7 @@ import os
 
 from database import SessionLocal, engine, Base
 from models import OpportunitySnapshot
-from schemas import OpportunitySnapshotCreate, OpportunitySnapshotResponse, OpportunityStats
+from schemas import OpportunitySnapshotCreate, OpportunitySnapshotResponse, OpportunityStats, DealNeedingAttentionResponse
 
 Base.metadata.create_all(bind=engine)
 
@@ -162,6 +162,65 @@ def get_opportunity_stats(db: Session = Depends(get_db)):
         stage_distribution=stage_distribution,
         recent_opportunities=recent_opportunities,
     )
+
+@app.get("/deals-needing-attention", response_model=List[DealNeedingAttentionResponse])
+def get_deals_needing_attention(db: Session = Depends(get_db)):
+    """
+    Get deals in stage 3 or later with high ARR (>= 100,000) that need attention.
+    Returns deals that either:
+    1. Have no next step notes (tagged as "Needs notes")
+    2. Have no services attached (tagged as "Needs services")
+    """
+    MIN_ARR = 100000
+    MIN_STAGE = 3
+    
+    query = db.query(OpportunitySnapshot).filter(
+        OpportunitySnapshot.delta_average_arr >= MIN_ARR
+    )
+    
+    all_opportunities = query.all()
+    
+    deals_needing_attention = []
+    for opp in all_opportunities:
+        try:
+            stage_num = int(opp.stage_number) if opp.stage_number else 0
+        except (ValueError, TypeError):
+            stage_num = 0
+        
+        if stage_num < MIN_STAGE:
+            continue
+        
+        tags = []
+        
+        needs_notes = not opp.services_next_steps or opp.services_next_steps.strip() == ""
+        if needs_notes:
+            tags.append("Needs notes")
+        
+        needs_services = not opp.services_attached_amount or float(opp.services_attached_amount) <= 0
+        if needs_services:
+            tags.append("Needs services")
+        
+        if tags:
+            deal_data = {
+                "id": opp.id,
+                "opportunty_id": opp.opportunty_id,
+                "account_id": opp.account_id,
+                "opportunity_name": opp.opportunity_name,
+                "account_name": opp.account_name,
+                "close_date": opp.close_date,
+                "delta_average_arr": opp.delta_average_arr,
+                "services_attached_amount": opp.services_attached_amount,
+                "stage_number": opp.stage_number,
+                "forecast_category": opp.forecast_category,
+                "services_next_steps": opp.services_next_steps,
+                "ps_manager_name": opp.ps_manager_name,
+                "owner_name": opp.owner_name,
+                "opportunity_type": opp.opportunity_type,
+                "tags": tags,
+            }
+            deals_needing_attention.append(deal_data)
+    
+    return deals_needing_attention
 
 if __name__ == "__main__":
     import uvicorn
