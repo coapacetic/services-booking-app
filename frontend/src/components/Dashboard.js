@@ -96,11 +96,11 @@ const Dashboard = () => {
 
   const topDeals = opportunities
     .filter(opp => 
-      opp.amount > 100000 && 
-      opp.stage && 
-      !opp.stage.toLowerCase().includes('closed')
+      opp.delta_average_arr > 100000 && 
+      opp.stage_number && 
+      !opp.stage_number.toLowerCase().includes('closed')
     )
-    .sort((a, b) => b.amount - a.amount);
+    .sort((a, b) => b.delta_average_arr - a.delta_average_arr);
 
   return (
     <div className="space-y-6">
@@ -223,17 +223,17 @@ const Dashboard = () => {
                 topDeals.map((opportunity) => (
                   <tr key={opportunity.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {opportunity.name}
+                      {opportunity.opportunity_name}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {opportunity.account_name || 'N/A'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {formatCurrency(opportunity.amount)}
+                      {formatCurrency(opportunity.delta_average_arr)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                        {opportunity.stage || 'N/A'}
+                        {opportunity.stage_number || 'N/A'}
                       </span>
                     </td>
                   </tr>
