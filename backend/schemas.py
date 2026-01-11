@@ -5,22 +5,22 @@ from decimal import Decimal
 import uuid
 
 class OpportunitySnapshotBase(BaseModel):
-    salesforce_id: str = Field(..., max_length=18)
-    name: str = Field(..., max_length=255)
+    opportunty_id: str = Field(..., max_length=18)
+    account_id: str = Field(..., max_length=18)
+    opportunity_name: str = Field(..., max_length=255)
     account_name: Optional[str] = Field(None, max_length=255)
-    amount: Optional[Decimal] = None
-    stage: Optional[str] = Field(None, max_length=100)
-    probability: Optional[int] = Field(None, ge=0, le=100)
     close_date: Optional[date] = None
-    created_date: Optional[datetime] = None
-    last_modified: Optional[datetime] = None
-    owner_name: Optional[str] = Field(None, max_length=255)
-    type: Optional[str] = Field(None, max_length=100)
-    lead_source: Optional[str] = Field(None, max_length=100)
-    campaign: Optional[str] = Field(None, max_length=255)
-    description: Optional[str] = None
+    delta_average_arr: Optional[Decimal] = None
+    services_attached_amount: Optional[Decimal] = None
+    stage_number: Optional[str] = Field(None, max_length=100)
     forecast_category: Optional[str] = Field(None, max_length=50)
-    sync_timestamp: Optional[datetime] = None
+    services_next_steps: Optional[str] = Field(None, max_length=255)
+    ps_manager_name: Optional[str] = Field(None, max_length=255)
+    owner_name: Optional[str] = Field(None, max_length=255)
+    opportunity_type: Optional[str] = Field(None, max_length=100)
+    _created_date: Optional[datetime] = None
+    _last_modified: Optional[datetime] = None
+    _sync_timestamp: Optional[datetime] = None
 
 class OpportunitySnapshotCreate(OpportunitySnapshotBase):
     pass
@@ -37,6 +37,8 @@ class OpportunitySnapshotResponse(OpportunitySnapshotBase):
 
 class OpportunityStats(BaseModel):
     total_opportunities: int
+    total_opportunities_with_services: int
     total_amount: float
+    total_services_amount: float
     stage_distribution: Dict[str, Dict[str, Any]]
     recent_opportunities: int

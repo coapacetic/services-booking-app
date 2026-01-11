@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { formatCurrency } from '../utils/formatters';
 
 const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
   const [formData, setFormData] = useState({
-    salesforce_id: '',
-    name: '',
+    opportunty_id: '',
+    account_id: '',
+    opportunity_name: '',
     account_name: '',
-    amount: '',
-    stage: '',
-    probability: '',
     close_date: '',
-    owner_name: '',
-    type: '',
-    lead_source: '',
-    campaign: '',
-    description: '',
+    delta_average_arr: '',
+    services_attached_amount: '',
+    stage_number: '',
     forecast_category: '',
+    services_next_steps: '',
+    ps_manager_name: '',
+    owner_name: '',
+    opportunity_type: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -23,19 +22,19 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
   useEffect(() => {
     if (opportunity && isEditing) {
       setFormData({
-        salesforce_id: opportunity.salesforce_id || '',
-        name: opportunity.name || '',
+        opportunty_id: opportunity.opportunty_id || '',
+        account_id: opportunity.account_id || '',
+        opportunity_name: opportunity.opportunity_name || '',
         account_name: opportunity.account_name || '',
-        amount: opportunity.amount || '',
-        stage: opportunity.stage || '',
-        probability: opportunity.probability || '',
         close_date: opportunity.close_date || '',
-        owner_name: opportunity.owner_name || '',
-        type: opportunity.type || '',
-        lead_source: opportunity.lead_source || '',
-        campaign: opportunity.campaign || '',
-        description: opportunity.description || '',
+        delta_average_arr: opportunity.delta_average_arr || '',
+        services_attached_amount: opportunity.services_attached_amount || '',
+        stage_number: opportunity.stage_number || '',
         forecast_category: opportunity.forecast_category || '',
+        services_next_steps: opportunity.services_next_steps || '',
+        ps_manager_name: opportunity.ps_manager_name || '',
+        owner_name: opportunity.owner_name || '',
+        opportunity_type: opportunity.opportunity_type || '',
       });
     }
   }, [opportunity, isEditing]);
@@ -51,17 +50,20 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
   const validateForm = () => {
     const newErrors = {};
     
-    if (!formData.salesforce_id.trim()) {
-      newErrors.salesforce_id = 'Salesforce ID is required';
+    if (!formData.opportunty_id.trim()) {
+      newErrors.opportunty_id = 'Opportunity ID is required';
     }
-    if (!formData.name.trim()) {
-      newErrors.name = 'Opportunity name is required';
+    if (!formData.account_id.trim()) {
+      newErrors.account_id = 'Account ID is required';
     }
-    if (formData.amount && isNaN(formData.amount)) {
-      newErrors.amount = 'Amount must be a valid number';
+    if (!formData.opportunity_name.trim()) {
+      newErrors.opportunity_name = 'Opportunity name is required';
     }
-    if (formData.probability && (isNaN(formData.probability) || formData.probability < 0 || formData.probability > 100)) {
-      newErrors.probability = 'Probability must be between 0 and 100';
+    if (formData.delta_average_arr && isNaN(formData.delta_average_arr)) {
+      newErrors.delta_average_arr = 'Delta ARR must be a valid number';
+    }
+    if (formData.services_attached_amount && isNaN(formData.services_attached_amount)) {
+      newErrors.services_attached_amount = 'Services Amount must be a valid number';
     }
     
     setErrors(newErrors);
@@ -73,27 +75,16 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
     if (validateForm()) {
       const submissionData = {
         ...formData,
-        amount: formData.amount ? parseFloat(formData.amount) : null,
-        probability: formData.probability ? parseInt(formData.probability) : null,
+        delta_average_arr: formData.delta_average_arr ? parseFloat(formData.delta_average_arr) : null,
+        services_attached_amount: formData.services_attached_amount ? parseFloat(formData.services_attached_amount) : null,
         close_date: formData.close_date || null,
       };
       onSubmit(submissionData);
     }
   };
 
-  const stages = [
-    'Prospecting',
-    'Qualification',
-    'Needs Analysis',
-    'Value Proposition',
-    'Proposal/Price Quote',
-    'Negotiation/Review',
-    'Closed Won',
-    'Closed Lost',
-  ];
-
-  const types = ['New Business', 'Existing Business', 'Renewal'];
-  const leadSources = ['Web', 'Phone', 'Email', 'Conference', 'Trade Show', 'Referral'];
+  const stageNumbers = ['1', '2', '3', '4', '5'];
+  const opportunityTypes = ['New Business', 'Existing Business', 'Renewal'];
   const forecastCategories = ['Pipeline', 'Forecast', 'Commit', 'Closed', 'Omitted'];
 
   return (
@@ -119,36 +110,53 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Salesforce ID *
+                  Opportunity ID *
                 </label>
                 <input
                   type="text"
-                  name="salesforce_id"
-                  value={formData.salesforce_id}
+                  name="opportunty_id"
+                  value={formData.opportunty_id}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                   disabled={isEditing}
                 />
-                {errors.salesforce_id && (
-                  <p className="mt-1 text-sm text-red-600">{errors.salesforce_id}</p>
+                {errors.opportunty_id && (
+                  <p className="mt-1 text-sm text-red-600">{errors.opportunty_id}</p>
                 )}
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Opportunity Name *
+                  Account ID *
                 </label>
                 <input
                   type="text"
-                  name="name"
-                  value={formData.name}
+                  name="account_id"
+                  value={formData.account_id}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  disabled={isEditing}
                 />
-                {errors.name && (
-                  <p className="mt-1 text-sm text-red-600">{errors.name}</p>
+                {errors.account_id && (
+                  <p className="mt-1 text-sm text-red-600">{errors.account_id}</p>
                 )}
               </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Opportunity Name *
+              </label>
+              <input
+                type="text"
+                name="opportunity_name"
+                value={formData.opportunity_name}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+              />
+              {errors.opportunity_name && (
+                <p className="mt-1 text-sm text-red-600">{errors.opportunity_name}</p>
+              )}
             </div>
 
             <div>
@@ -167,38 +175,37 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Amount
+                  Delta ARR
                 </label>
                 <input
                   type="number"
-                  name="amount"
-                  value={formData.amount}
+                  name="delta_average_arr"
+                  value={formData.delta_average_arr}
                   onChange={handleChange}
                   step="0.01"
                   placeholder="0.00"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
-                {errors.amount && (
-                  <p className="mt-1 text-sm text-red-600">{errors.amount}</p>
+                {errors.delta_average_arr && (
+                  <p className="mt-1 text-sm text-red-600">{errors.delta_average_arr}</p>
                 )}
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Probability (%)
+                  Services Attached Amount
                 </label>
                 <input
                   type="number"
-                  name="probability"
-                  value={formData.probability}
+                  name="services_attached_amount"
+                  value={formData.services_attached_amount}
                   onChange={handleChange}
-                  min="0"
-                  max="100"
-                  placeholder="0-100"
+                  step="0.01"
+                  placeholder="0.00"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
-                {errors.probability && (
-                  <p className="mt-1 text-sm text-red-600">{errors.probability}</p>
+                {errors.services_attached_amount && (
+                  <p className="mt-1 text-sm text-red-600">{errors.services_attached_amount}</p>
                 )}
               </div>
             </div>
@@ -211,16 +218,16 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Stage
+                  Stage Number
                 </label>
                 <select
-                  name="stage"
-                  value={formData.stage}
+                  name="stage_number"
+                  value={formData.stage_number}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                 >
                   <option value="">Select Stage</option>
-                  {stages.map(stage => (
+                  {stageNumbers.map(stage => (
                     <option key={stage} value={stage}>{stage}</option>
                   ))}
                 </select>
@@ -243,6 +250,19 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
+                  PS Manager Name
+                </label>
+                <input
+                  type="text"
+                  name="ps_manager_name"
+                  value={formData.ps_manager_name}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Owner Name
                 </label>
                 <input
@@ -253,39 +273,22 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
               </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Type
-                </label>
-                <select
-                  name="type"
-                  value={formData.type}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                >
-                  <option value="">Select Type</option>
-                  {types.map(type => (
-                    <option key={type} value={type}>{type}</option>
-                  ))}
-                </select>
-              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Lead Source
+                  Opportunity Type
                 </label>
                 <select
-                  name="lead_source"
-                  value={formData.lead_source}
+                  name="opportunity_type"
+                  value={formData.opportunity_type}
                   onChange={handleChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                 >
-                  <option value="">Select Lead Source</option>
-                  {leadSources.map(source => (
-                    <option key={source} value={source}>{source}</option>
+                  <option value="">Select Type</option>
+                  {opportunityTypes.map(type => (
+                    <option key={type} value={type}>{type}</option>
                   ))}
                 </select>
               </div>
@@ -310,26 +313,13 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Campaign
-              </label>
-              <input
-                type="text"
-                name="campaign"
-                value={formData.campaign}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Description
+                Services Next Steps
               </label>
               <textarea
-                name="description"
-                value={formData.description}
+                name="services_next_steps"
+                value={formData.services_next_steps}
                 onChange={handleChange}
-                rows={4}
+                rows={3}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
             </div>

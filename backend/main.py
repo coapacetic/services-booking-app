@@ -52,13 +52,13 @@ def get_opportunities(
     query = db.query(OpportunitySnapshot)
     
     if stage:
-        query = query.filter(OpportunitySnapshot.stage.ilike(f"%{stage}%"))
+        query = query.filter(OpportunitySnapshot.stage_number.ilike(f"%{stage}%"))
     if account_name:
         query = query.filter(OpportunitySnapshot.account_name.ilike(f"%{account_name}%"))
     if min_amount:
-        query = query.filter(OpportunitySnapshot.amount >= min_amount)
+        query = query.filter(OpportunitySnapshot.delta_average_arr >= min_amount)
     if max_amount:
-        query = query.filter(OpportunitySnapshot.amount <= max_amount)
+        query = query.filter(OpportunitySnapshot.delta_average_arr <= max_amount)
     
     opportunities = query.offset(skip).limit(limit).all()
     return opportunities
@@ -66,7 +66,7 @@ def get_opportunities(
 @app.get("/opportunities/{opportunity_id}", response_model=OpportunitySnapshotResponse)
 def get_opportunity(opportunity_id: str, db: Session = Depends(get_db)):
     opportunity = db.query(OpportunitySnapshot).filter(
-        OpportunitySnapshot.salesforce_id == opportunity_id
+        OpportunitySnapshot.opportunty_id == opportunity_id
     ).first()
     if not opportunity:
         raise HTTPException(status_code=404, detail="Opportunity not found")
@@ -90,7 +90,7 @@ def update_opportunity(
     db: Session = Depends(get_db)
 ):
     db_opportunity = db.query(OpportunitySnapshot).filter(
-        OpportunitySnapshot.salesforce_id == opportunity_id
+        OpportunitySnapshot.opportunty_id == opportunity_id
     ).first()
     if not db_opportunity:
         raise HTTPException(status_code=404, detail="Opportunity not found")
@@ -105,7 +105,7 @@ def update_opportunity(
 @app.delete("/opportunities/{opportunity_id}")
 def delete_opportunity(opportunity_id: str, db: Session = Depends(get_db)):
     db_opportunity = db.query(OpportunitySnapshot).filter(
-        OpportunitySnapshot.salesforce_id == opportunity_id
+        OpportunitySnapshot.opportunty_id == opportunity_id
     ).first()
     if not db_opportunity:
         raise HTTPException(status_code=404, detail="Opportunity not found")
@@ -118,17 +118,26 @@ def delete_opportunity(opportunity_id: str, db: Session = Depends(get_db)):
 def get_opportunity_stats(db: Session = Depends(get_db)):
     total_opportunities = db.query(OpportunitySnapshot).count()
     
-    total_value = db.query(OpportunitySnapshot.amount).filter(
-        OpportunitySnapshot.amount.isnot(None)
+    total_opportunities_with_services = db.query(OpportunitySnapshot).filter(
+        OpportunitySnapshot.services_attached_amount > 0
+    ).count()
+
+    total_value = db.query(OpportunitySnapshot.delta_average_arr).filter(
+        OpportunitySnapshot.delta_average_arr.isnot(None)
     ).all()
     total_amount = sum(value[0] for value in total_value if value[0])
+
+    total_services_amount = db.query(OpportunitySnapshot.services_attached_amount).filter(
+        OpportunitySnapshot.services_attached_amount > 0
+    ).all()
+    total_services_amount = sum(value[0] for value in total_services_amount if value[0])
     
     # Stage distribution
     stage_stats = db.query(
-        OpportunitySnapshot.stage,
+        OpportunitySnapshot.stage_number,
         func.count(OpportunitySnapshot.id).label('count'),
-        func.sum(OpportunitySnapshot.amount).label('total_amount')
-    ).group_by(OpportunitySnapshot.stage).all()
+        func.sum(OpportunitySnapshot.delta_average_arr).label('total_amount')
+    ).group_by(OpportunitySnapshot.stage_number).all()
     
     stage_distribution = {
         stage: {
@@ -142,14 +151,16 @@ def get_opportunity_stats(db: Session = Depends(get_db)):
     from datetime import timedelta
     thirty_days_ago = datetime.now() - timedelta(days=30)
     recent_opportunities = db.query(OpportunitySnapshot).filter(
-        OpportunitySnapshot.sync_timestamp >= thirty_days_ago
+        OpportunitySnapshot._sync_timestamp >= thirty_days_ago
     ).count()
     
     return OpportunityStats(
         total_opportunities=total_opportunities,
+        total_opportunities_with_services=total_opportunities_with_services,
         total_amount=total_amount,
+        total_services_amount=total_services_amount,
         stage_distribution=stage_distribution,
-        recent_opportunities=recent_opportunities
+        recent_opportunities=recent_opportunities,
     )
 
 if __name__ == "__main__":

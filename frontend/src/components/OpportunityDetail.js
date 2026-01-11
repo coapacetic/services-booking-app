@@ -12,17 +12,17 @@ const OpportunityDetail = ({ opportunity, onEdit, onClose }) => {
   }
 
   const fields = [
-    { label: 'Salesforce ID', value: opportunity.salesforce_id },
-    { label: 'Opportunity Name', value: opportunity.name },
+    { label: 'Opportunity ID', value: opportunity.opportunty_id },
+    { label: 'Account ID', value: opportunity.account_id },
+    { label: 'Opportunity Name', value: opportunity.opportunity_name },
     { label: 'Account Name', value: opportunity.account_name || 'N/A' },
-    { label: 'Amount', value: formatCurrency(opportunity.amount) },
-    { label: 'Stage', value: opportunity.stage, isBadge: true },
-    { label: 'Probability', value: opportunity.probability ? `${opportunity.probability}%` : 'N/A', isColored: true },
+    { label: 'Delta ARR', value: formatCurrency(opportunity.delta_average_arr) },
+    { label: 'Services Amount', value: formatCurrency(opportunity.services_attached_amount) },
+    { label: 'Stage Number', value: opportunity.stage_number, isBadge: true },
     { label: 'Close Date', value: formatDate(opportunity.close_date) },
     { label: 'Owner', value: opportunity.owner_name || 'N/A' },
-    { label: 'Type', value: opportunity.type || 'N/A' },
-    { label: 'Lead Source', value: opportunity.lead_source || 'N/A' },
-    { label: 'Campaign', value: opportunity.campaign || 'N/A' },
+    { label: 'PS Manager', value: opportunity.ps_manager_name || 'N/A' },
+    { label: 'Opportunity Type', value: opportunity.opportunity_type || 'N/A' },
     { label: 'Forecast Category', value: opportunity.forecast_category || 'N/A' },
   ];
 
@@ -39,7 +39,7 @@ const OpportunityDetail = ({ opportunity, onEdit, onClose }) => {
               <ArrowLeftIcon className="h-4 w-4 mr-1" />
               Back to Opportunities
             </button>
-            <h2 className="text-2xl font-bold text-gray-900">{opportunity.name}</h2>
+            <h2 className="text-2xl font-bold text-gray-900">{opportunity.opportunity_name}</h2>
             <p className="text-gray-600 mt-1">{opportunity.account_name}</p>
           </div>
           <button
@@ -54,22 +54,20 @@ const OpportunityDetail = ({ opportunity, onEdit, onClose }) => {
         {/* Key Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="bg-gray-50 p-4 rounded-lg">
-            <p className="text-sm font-medium text-gray-600">Amount</p>
-            <p className="text-xl font-bold text-gray-900">{formatCurrency(opportunity.amount)}</p>
+            <p className="text-sm font-medium text-gray-600">Delta ARR</p>
+            <p className="text-xl font-bold text-gray-900">{formatCurrency(opportunity.delta_average_arr)}</p>
           </div>
           <div className="bg-gray-50 p-4 rounded-lg">
             <p className="text-sm font-medium text-gray-600">Stage</p>
             <div className="mt-1">
-              <span className={`px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full ${getStageColor(opportunity.stage)}`}>
-                {opportunity.stage || 'N/A'}
+              <span className={`px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full ${getStageColor(opportunity.stage_number)}`}>
+                {opportunity.stage_number || 'N/A'}
               </span>
             </div>
           </div>
           <div className="bg-gray-50 p-4 rounded-lg">
-            <p className="text-sm font-medium text-gray-600">Probability</p>
-            <p className={`text-xl font-bold ${getProbabilityColor(opportunity.probability)}`}>
-              {opportunity.probability}%
-            </p>
+            <p className="text-sm font-medium text-gray-600">Services Amount</p>
+            <p className="text-xl font-bold text-gray-900">{formatCurrency(opportunity.services_attached_amount)}</p>
           </div>
         </div>
 
@@ -112,12 +110,12 @@ const OpportunityDetail = ({ opportunity, onEdit, onClose }) => {
           </div>
         </div>
 
-        {/* Description */}
-        {opportunity.description && (
+        {/* Services Next Steps */}
+        {opportunity.services_next_steps && (
           <div className="mt-8">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Description</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Services Next Steps</h3>
             <div className="bg-gray-50 p-4 rounded-lg">
-              <p className="text-gray-700 whitespace-pre-wrap">{opportunity.description}</p>
+              <p className="text-gray-700 whitespace-pre-wrap">{opportunity.services_next_steps}</p>
             </div>
           </div>
         )}
@@ -126,13 +124,13 @@ const OpportunityDetail = ({ opportunity, onEdit, onClose }) => {
         <div className="mt-8 pt-6 border-t border-gray-200">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-500">
             <div>
-              <span className="font-medium">Created:</span> {formatDateTime(opportunity.created_date)}
+              <span className="font-medium">Created:</span> {formatDateTime(opportunity._created_date)}
             </div>
             <div>
-              <span className="font-medium">Last Modified:</span> {formatDateTime(opportunity.last_modified)}
+              <span className="font-medium">Last Modified:</span> {formatDateTime(opportunity._last_modified)}
             </div>
             <div>
-              <span className="font-medium">Last Sync:</span> {formatDateTime(opportunity.sync_timestamp)}
+              <span className="font-medium">Last Sync:</span> {formatDateTime(opportunity._sync_timestamp)}
             </div>
             <div>
               <span className="font-medium">ID:</span> {opportunity.id}
