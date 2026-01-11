@@ -158,6 +158,43 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {/* Services Attach Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="card">
+          <div className="flex items-center">
+            <div className="flex-1">
+              <p className="text-sm font-medium text-gray-600">Services Logo Attach Rate (Stage 3+)</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {stats.services_logo_attach_rate?.toFixed(1) ?? '0.0'}%
+              </p>
+              <p className="text-xs text-gray-500 mt-1">Opportunities with services / Total opportunities</p>
+            </div>
+            <div className="ml-4">
+              <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
+                <span className="text-indigo-600 font-bold">🎯</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="card">
+          <div className="flex items-center">
+            <div className="flex-1">
+              <p className="text-sm font-medium text-gray-600">Services Dollar Attach Rate (Stage 3+)</p>
+              <p className="text-2xl font-bold text-gray-900">
+                {stats.services_dollar_attach_rate?.toFixed(1) ?? '0.0'}%
+              </p>
+              <p className="text-xs text-gray-500 mt-1">Services amount / Delta average ARR</p>
+            </div>
+            <div className="ml-4">
+              <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center">
+                <span className="text-teal-600 font-bold">💵</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="card">

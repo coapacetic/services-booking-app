@@ -27,11 +27,11 @@ class OpportunitySnapshotCreate(OpportunitySnapshotBase):
 
 class OpportunitySnapshotResponse(OpportunitySnapshotBase):
     id: uuid.UUID
-    
+
     @field_serializer('id')
     def serialize_id(self, value: uuid.UUID) -> str:
         return str(value) if value else None
-    
+
     class Config:
         from_attributes = True
 

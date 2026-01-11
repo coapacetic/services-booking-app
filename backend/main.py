@@ -154,6 +154,46 @@ def get_opportunity_stats(db: Session = Depends(get_db)):
         OpportunitySnapshot._sync_timestamp >= thirty_days_ago
     ).count()
     
+    # Services attach metrics for Stage 3 or later
+    stage_3_plus_stages = ["3", "4", "5"]
+    
+    # Total opportunities in stage 3+
+    total_opps_stage_3_plus = db.query(OpportunitySnapshot).filter(
+        OpportunitySnapshot.stage_number.in_(stage_3_plus_stages)
+    ).count()
+    
+    # Opportunities with services in stage 3+
+    opps_with_services_stage_3_plus = db.query(OpportunitySnapshot).filter(
+        OpportunitySnapshot.stage_number.in_(stage_3_plus_stages),
+        OpportunitySnapshot.services_attached_amount > 0
+    ).count()
+    
+    # Services Logo Attach Rate: (opps with services in stage 3+) / (total opps in stage 3+)
+    services_logo_attach_rate = 0.0
+    if total_opps_stage_3_plus > 0:
+        services_logo_attach_rate = (opps_with_services_stage_3_plus / total_opps_stage_3_plus) * 100
+    
+    # Total services amount in stage 3+
+    services_amount_stage_3_plus = db.query(
+        func.sum(OpportunitySnapshot.services_attached_amount)
+    ).filter(
+        OpportunitySnapshot.stage_number.in_(stage_3_plus_stages),
+        OpportunitySnapshot.services_attached_amount.isnot(None)
+    ).scalar() or 0
+    
+    # Total delta average ARR in stage 3+
+    delta_arr_stage_3_plus = db.query(
+        func.sum(OpportunitySnapshot.delta_average_arr)
+    ).filter(
+        OpportunitySnapshot.stage_number.in_(stage_3_plus_stages),
+        OpportunitySnapshot.delta_average_arr.isnot(None)
+    ).scalar() or 0
+    
+    # Services Dollar Attach Rate: (total services amount in stage 3+) / (total delta ARR in stage 3+)
+    services_dollar_attach_rate = 0.0
+    if delta_arr_stage_3_plus > 0:
+        services_dollar_attach_rate = (float(services_amount_stage_3_plus) / float(delta_arr_stage_3_plus)) * 100
+    
     return OpportunityStats(
         total_opportunities=total_opportunities,
         total_opportunities_with_services=total_opportunities_with_services,
@@ -161,6 +201,8 @@ def get_opportunity_stats(db: Session = Depends(get_db)):
         total_services_amount=total_services_amount,
         stage_distribution=stage_distribution,
         recent_opportunities=recent_opportunities,
+        services_logo_attach_rate=services_logo_attach_rate,
+        services_dollar_attach_rate=services_dollar_attach_rate,
     )
 
 @app.get("/deals-needing-attention", response_model=List[DealNeedingAttentionResponse])
