@@ -1,12 +1,11 @@
-from sqlalchemy import Column, String, Integer, Float, DateTime, Date, Text, DECIMAL
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Column, String, Integer, Float, DateTime, Date, Text, DECIMAL, Uuid
 from database import Base
 import uuid
 
 class OpportunitySnapshot(Base):
     __tablename__ = "opportunity_snapshots"
     
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
     opportunty_id = Column(String(18), nullable=False, unique=True)
     account_id = Column(String(18), nullable=False)
     opportunity_name = Column(String(255), nullable=False)

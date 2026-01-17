@@ -9,8 +9,9 @@ import os
 from database import SessionLocal, engine, Base
 from models import OpportunitySnapshot
 from schemas import OpportunitySnapshotCreate, OpportunitySnapshotResponse, OpportunityStats, DealNeedingAttentionResponse
+from init_db import initialize
 
-Base.metadata.create_all(bind=engine)
+initialize()
 
 app = FastAPI(
     title="Opportunity Management API",
