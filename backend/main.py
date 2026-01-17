@@ -9,8 +9,9 @@ import os
 from database import SessionLocal, engine, Base
 from models import OpportunitySnapshot
 from schemas import OpportunitySnapshotCreate, OpportunitySnapshotResponse, OpportunityStats, DealNeedingAttentionResponse
+from init_db import initialize
 
-Base.metadata.create_all(bind=engine)
+initialize()
 
 app = FastAPI(
     title="Opportunity Management API",
@@ -21,7 +22,7 @@ app = FastAPI(
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["http://localhost:3000", "http://localhost:3001"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

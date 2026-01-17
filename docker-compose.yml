@@ -1,26 +1,14 @@
 services:
-  postgres:
-    image: postgres:15
-    environment:
-      POSTGRES_DB: opportunity_db
-      POSTGRES_USER: coap
-      POSTGRES_PASSWORD: 
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
-
   backend:
     build: ./backend
     ports:
       - "8000:8000"
     environment:
-      DATABASE_URL: postgresql://coap@postgres:5432/opportunity_db
-    depends_on:
-      - postgres
+      DATABASE_URL: duckdb:///./opportunity_db.duckdb
     volumes:
       - ./backend:/app
+      - ./database:/app/../database
+      - duckdb_data:/app/data
 
   frontend:
     build: ./frontend
@@ -33,4 +21,4 @@ services:
       - /app/node_modules
 
 volumes:
-  postgres_data:
+  duckdb_data:
