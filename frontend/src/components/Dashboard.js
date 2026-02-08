@@ -14,6 +14,14 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar, Pie } from 'react-chartjs-2';
+import {
+  QueueListIcon,
+  CurrencyDollarIcon,
+  CheckBadgeIcon,
+  CalculatorIcon,
+  CheckCircleIcon,
+  SparklesIcon,
+} from '@heroicons/react/24/outline';
 
 ChartJS.register(
   CategoryScale,
@@ -111,7 +119,7 @@ const Dashboard = () => {
             </div>
             <div className="ml-4">
               <div className="w-12 h-12 bg-primary-100 border border-primary-900 flex items-center justify-center">
-                <span className="text-primary-600 font-bold">📊</span>
+                <QueueListIcon className="h-6 w-6 text-primary-900" />
               </div>
             </div>
           </div>
@@ -125,7 +133,7 @@ const Dashboard = () => {
             </div>
             <div className="ml-4">
               <div className="w-12 h-12 bg-primary-200 border border-primary-900 flex items-center justify-center">
-                <span className="text-primary-700 font-bold">💰</span>
+                <CurrencyDollarIcon className="h-6 w-6 text-primary-900" />
               </div>
             </div>
           </div>
@@ -139,7 +147,7 @@ const Dashboard = () => {
             </div>
             <div className="ml-4">
               <div className="w-12 h-12 bg-primary-300 border border-primary-900 flex items-center justify-center">
-                <span className="text-primary-900 font-bold">📈</span>
+                <CheckBadgeIcon className="h-6 w-6 text-primary-900" />
               </div>
             </div>
           </div>
@@ -155,7 +163,7 @@ const Dashboard = () => {
             </div>
             <div className="ml-4">
               <div className="w-12 h-12 bg-primary-400 border border-primary-900 flex items-center justify-center">
-                <span className="text-white font-bold">📋</span>
+                <CalculatorIcon className="h-6 w-6 text-white" />
               </div>
             </div>
           </div>
@@ -175,7 +183,7 @@ const Dashboard = () => {
             </div>
             <div className="ml-4">
               <div className="w-12 h-12 bg-primary-500 border border-primary-900 flex items-center justify-center">
-                <span className="text-white font-bold">🎯</span>
+                <CheckCircleIcon className="h-6 w-6 text-white" />
               </div>
             </div>
           </div>
@@ -192,7 +200,7 @@ const Dashboard = () => {
             </div>
             <div className="ml-4">
               <div className="w-12 h-12 bg-primary-600 border border-primary-900 flex items-center justify-center">
-                <span className="text-white font-bold">💵</span>
+                <SparklesIcon className="h-6 w-6 text-white" />
               </div>
             </div>
           </div>
