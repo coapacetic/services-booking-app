@@ -21,6 +21,10 @@ module.exports = {
       },
       borderWidth: {
         hairline: '0.5px',
+      },
+      fontFamily: {
+        serif: ['Playfair Display', 'serif'],
+        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
       }
     },
   },

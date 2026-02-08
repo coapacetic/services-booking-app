@@ -54,7 +54,7 @@ const DealsNeedingAttention = () => {
 
   return (
     <div className="card">
-      <h3 className="text-lg font-semibold text-primary-900 mb-4">
+      <h3 className="text-lg font-serif font-semibold text-primary-900 mb-4">
         Deals Needing Attention
         <span className="ml-2 text-sm font-normal text-primary-600">
           ({deals.length} deal{deals.length !== 1 ? 's' : ''})

@@ -91,7 +91,7 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
     <div className="max-w-2xl mx-auto">
       <div className="card">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold text-primary-900">
+          <h2 className="text-xl font-serif font-bold text-primary-900">
             {isEditing ? 'Edit Opportunity' : 'Create New Opportunity'}
           </h2>
           <button
@@ -105,7 +105,7 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Information */}
           <div className="space-y-4">
-            <h3 className="text-lg font-medium text-primary-900">Basic Information</h3>
+            <h3 className="text-lg font-serif font-medium text-primary-900">Basic Information</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -213,7 +213,7 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
 
           {/* Sales Information */}
           <div className="space-y-4">
-            <h3 className="text-lg font-medium text-primary-900">Sales Information</h3>
+            <h3 className="text-lg font-serif font-medium text-primary-900">Sales Information</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>

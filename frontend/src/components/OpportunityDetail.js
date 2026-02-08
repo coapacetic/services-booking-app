@@ -39,7 +39,7 @@ const OpportunityDetail = ({ opportunity, onEdit, onClose }) => {
               <ArrowLeftIcon className="h-4 w-4 mr-1" />
               Back to Opportunities
             </button>
-            <h2 className="text-2xl font-bold text-primary-900">{opportunity.opportunity_name}</h2>
+            <h2 className="text-2xl font-serif font-bold text-primary-900">{opportunity.opportunity_name}</h2>
             <p className="text-primary-600 mt-1">{opportunity.account_name}</p>
           </div>
           <button
@@ -74,7 +74,7 @@ const OpportunityDetail = ({ opportunity, onEdit, onClose }) => {
         {/* Details Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
-            <h3 className="text-lg font-semibold text-primary-900 mb-4">Opportunity Details</h3>
+            <h3 className="text-lg font-serif font-semibold text-primary-900 mb-4">Opportunity Details</h3>
             <dl className="space-y-3">
               {fields.slice(0, 7).map((field) => (
                 <div key={field.label} className="flex justify-between py-2 border-b border-primary-100">
@@ -98,7 +98,7 @@ const OpportunityDetail = ({ opportunity, onEdit, onClose }) => {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold text-primary-900 mb-4">Sales Information</h3>
+            <h3 className="text-lg font-serif font-semibold text-primary-900 mb-4">Sales Information</h3>
             <dl className="space-y-3">
               {fields.slice(7).map((field) => (
                 <div key={field.label} className="flex justify-between py-2 border-b border-primary-100">
@@ -113,7 +113,7 @@ const OpportunityDetail = ({ opportunity, onEdit, onClose }) => {
         {/* Services Next Steps */}
         {opportunity.services_next_steps && (
           <div className="mt-8">
-            <h3 className="text-lg font-semibold text-primary-900 mb-4">Services Next Steps</h3>
+            <h3 className="text-lg font-serif font-semibold text-primary-900 mb-4">Services Next Steps</h3>
             <div className="bg-primary-50 p-4 rounded-lg">
               <p className="text-primary-700 whitespace-pre-wrap">{opportunity.services_next_steps}</p>
             </div>

@@ -63,7 +63,7 @@ const OpportunityTable = ({ onEdit, onView }) => {
     <div className="space-y-6">
       {/* Filters */}
       <form onSubmit={handleFilterSubmit} className="card">
-        <h3 className="text-lg font-semibold text-primary-900 mb-4">Filter Opportunities</h3>
+        <h3 className="text-lg font-serif font-semibold text-primary-900 mb-4">Filter Opportunities</h3>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <input
             type="text"
@@ -105,7 +105,7 @@ const OpportunityTable = ({ onEdit, onView }) => {
 
       {/* Table */}
       <div className="card overflow-x-auto">
-        <h3 className="text-lg font-semibold text-primary-900 mb-4">Opportunities ({opportunities.length})</h3>
+        <h3 className="text-lg font-serif font-semibold text-primary-900 mb-4">Opportunities ({opportunities.length})</h3>
         <table className="min-w-full divide-y divide-primary-200">
           <thead className="bg-primary-50 border-y border-hairline border-primary-200">
             <tr>

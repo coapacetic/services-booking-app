@@ -202,14 +202,14 @@ const Dashboard = () => {
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="card">
-          <h3 className="text-lg font-semibold text-primary-900 mb-4">Opportunities by Stage</h3>
+          <h3 className="text-lg font-serif font-semibold text-primary-900 mb-4">Opportunities by Stage</h3>
           <div className="h-64">
             <Pie data={stageData} options={{ maintainAspectRatio: false }} />
           </div>
         </div>
 
         <div className="card">
-          <h3 className="text-lg font-semibold text-primary-900 mb-4">Pipeline Value by Stage</h3>
+          <h3 className="text-lg font-serif font-semibold text-primary-900 mb-4">Pipeline Value by Stage</h3>
           <div className="h-64">
             <Bar
               data={amountData}
@@ -246,7 +246,7 @@ const Dashboard = () => {
 
       {/* Top Deals */}
       <div className="card">
-        <h3 className="text-lg font-semibold text-primary-900 mb-4">Top Deals</h3>
+        <h3 className="text-lg font-serif font-semibold text-primary-900 mb-4">Top Deals</h3>
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-primary-200">
             <thead className="bg-primary-50 border-y border-hairline border-primary-200">
@@ -307,7 +307,7 @@ const Dashboard = () => {
       <DealsNeedingAttention />
       {/* Recent Opportunities */}
       <div className="card">
-        <h3 className="text-lg font-semibold text-primary-900 mb-4">Recent Opportunities</h3>
+        <h3 className="text-lg font-serif font-semibold text-primary-900 mb-4">Recent Opportunities</h3>
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-primary-200">
             <thead className="bg-primary-50 border-y border-hairline border-primary-200">
