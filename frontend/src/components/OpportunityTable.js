@@ -71,7 +71,7 @@ const OpportunityTable = ({ onEdit, onView }) => {
             placeholder="Stage"
             value={filters.stage}
             onChange={handleFilterChange}
-            className="px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
+            className="px-3 py-2 border border-primary-900 focus:outline-none focus:ring-1 focus:ring-primary-900 text-primary-900 placeholder-primary-400"
           />
           <input
             type="text"
@@ -79,7 +79,7 @@ const OpportunityTable = ({ onEdit, onView }) => {
             placeholder="Account Name"
             value={filters.account_name}
             onChange={handleFilterChange}
-            className="px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
+            className="px-3 py-2 border border-primary-900 focus:outline-none focus:ring-1 focus:ring-primary-900 text-primary-900 placeholder-primary-400"
           />
           <input
             type="number"
@@ -87,7 +87,7 @@ const OpportunityTable = ({ onEdit, onView }) => {
             placeholder="Min Amount"
             value={filters.min_amount}
             onChange={handleFilterChange}
-            className="px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
+            className="px-3 py-2 border border-primary-900 focus:outline-none focus:ring-1 focus:ring-primary-900 text-primary-900 placeholder-primary-400"
           />
           <input
             type="number"
@@ -95,7 +95,7 @@ const OpportunityTable = ({ onEdit, onView }) => {
             placeholder="Max Amount"
             value={filters.max_amount}
             onChange={handleFilterChange}
-            className="px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
+            className="px-3 py-2 border border-primary-900 focus:outline-none focus:ring-1 focus:ring-primary-900 text-primary-900 placeholder-primary-400"
           />
         </div>
         <button type="submit" className="btn btn-primary mt-4">
@@ -151,7 +151,7 @@ const OpportunityTable = ({ onEdit, onView }) => {
                   {formatCurrency(opportunity.services_attached_amount)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStageColor(opportunity.stage_number)}`}>
+                  <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold border border-primary-900 ${getStageColor(opportunity.stage_number)}`}>
                     {opportunity.stage_number || 'N/A'}
                   </span>
                 </td>

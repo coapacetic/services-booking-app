@@ -110,7 +110,7 @@ const Dashboard = () => {
               <p className="text-2xl font-bold text-primary-900">{stats.total_opportunities}</p>
             </div>
             <div className="ml-4">
-              <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
+              <div className="w-12 h-12 bg-primary-100 border border-primary-900 flex items-center justify-center">
                 <span className="text-primary-600 font-bold">📊</span>
               </div>
             </div>
@@ -124,7 +124,7 @@ const Dashboard = () => {
               <p className="text-2xl font-bold text-primary-900">{formatCurrency(stats.total_amount)}</p>
             </div>
             <div className="ml-4">
-              <div className="w-12 h-12 bg-primary-200 rounded-full flex items-center justify-center">
+              <div className="w-12 h-12 bg-primary-200 border border-primary-900 flex items-center justify-center">
                 <span className="text-primary-700 font-bold">💰</span>
               </div>
             </div>
@@ -138,7 +138,7 @@ const Dashboard = () => {
               <p className="text-2xl font-bold text-primary-900">{stats.total_opportunities_with_services}</p>
             </div>
             <div className="ml-4">
-              <div className="w-12 h-12 bg-primary-300 rounded-full flex items-center justify-center">
+              <div className="w-12 h-12 bg-primary-300 border border-primary-900 flex items-center justify-center">
                 <span className="text-primary-900 font-bold">📈</span>
               </div>
             </div>
@@ -154,7 +154,7 @@ const Dashboard = () => {
               </p>
             </div>
             <div className="ml-4">
-              <div className="w-12 h-12 bg-primary-400 rounded-full flex items-center justify-center">
+              <div className="w-12 h-12 bg-primary-400 border border-primary-900 flex items-center justify-center">
                 <span className="text-white font-bold">📋</span>
               </div>
             </div>
@@ -174,7 +174,7 @@ const Dashboard = () => {
               <p className="text-xs text-primary-500 mt-1">Opportunities with services / Total opportunities</p>
             </div>
             <div className="ml-4">
-              <div className="w-12 h-12 bg-primary-500 rounded-full flex items-center justify-center">
+              <div className="w-12 h-12 bg-primary-500 border border-primary-900 flex items-center justify-center">
                 <span className="text-white font-bold">🎯</span>
               </div>
             </div>
@@ -191,7 +191,7 @@ const Dashboard = () => {
               <p className="text-xs text-primary-500 mt-1">Services amount / Delta average ARR</p>
             </div>
             <div className="ml-4">
-              <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center">
+              <div className="w-12 h-12 bg-primary-600 border border-primary-900 flex items-center justify-center">
                 <span className="text-white font-bold">💵</span>
               </div>
             </div>
@@ -282,7 +282,7 @@ const Dashboard = () => {
                       {formatCurrency(opportunity.services_attached_amount)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary-100 text-primary-900">
+                      <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold border border-primary-900 bg-primary-100 text-primary-900">
                         {opportunity.stage_number || 'N/A'}
                       </span>
                     </td>

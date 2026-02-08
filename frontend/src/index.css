@@ -24,7 +24,7 @@ code {
 }
 
 .card {
-  @apply bg-white rounded-lg shadow-md p-6 border-hairline border-primary-200;
+  @apply bg-white p-6 border border-primary-900;
 }
 
 .card h3,
@@ -34,7 +34,7 @@ code {
 }
 
 .btn {
-  @apply px-4 py-2 rounded-md font-medium transition-colors font-sans;
+  @apply px-4 py-2 font-medium transition-colors font-sans border border-primary-900;
 }
 
 .btn-primary {
@@ -42,5 +42,5 @@ code {
 }
 
 .btn-secondary {
-  @apply bg-white text-primary-900 border-hairline border-primary-300 hover:bg-primary-50;
+  @apply bg-white text-primary-900 border border-primary-900 hover:bg-primary-50;
 }

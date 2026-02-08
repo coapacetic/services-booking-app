@@ -117,7 +117,7 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
                   name="opportunty_id"
                   value={formData.opportunty_id}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
+                  className="w-full px-3 py-2 border border-primary-900 focus:outline-none focus:ring-1 focus:ring-primary-900 text-primary-900 placeholder-primary-400"
                   disabled={isEditing}
                 />
                 {errors.opportunty_id && (
@@ -134,7 +134,7 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
                   name="account_id"
                   value={formData.account_id}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
+                  className="w-full px-3 py-2 border border-primary-900 focus:outline-none focus:ring-1 focus:ring-primary-900 text-primary-900 placeholder-primary-400"
                   disabled={isEditing}
                 />
                 {errors.account_id && (
@@ -184,7 +184,7 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
                   onChange={handleChange}
                   step="0.01"
                   placeholder="0.00"
-                  className="w-full px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
+                  className="w-full px-3 py-2 border border-primary-900 focus:outline-none focus:ring-1 focus:ring-primary-900 text-primary-900 placeholder-primary-400"
                 />
                 {errors.delta_average_arr && (
                   <p className="mt-1 text-sm text-primary-700">{errors.delta_average_arr}</p>
@@ -202,7 +202,7 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
                   onChange={handleChange}
                   step="0.01"
                   placeholder="0.00"
-                  className="w-full px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
+                  className="w-full px-3 py-2 border border-primary-900 focus:outline-none focus:ring-1 focus:ring-primary-900 text-primary-900 placeholder-primary-400"
                 />
                 {errors.services_attached_amount && (
                   <p className="mt-1 text-sm text-primary-700">{errors.services_attached_amount}</p>
@@ -224,7 +224,7 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
                   name="stage_number"
                   value={formData.stage_number}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
+                  className="w-full px-3 py-2 border border-primary-900 focus:outline-none focus:ring-1 focus:ring-primary-900 text-primary-900 placeholder-primary-400"
                 >
                   <option value="">Select Stage</option>
                   {stageNumbers.map(stage => (
@@ -242,7 +242,7 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
                   name="close_date"
                   value={formData.close_date}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
+                  className="w-full px-3 py-2 border border-primary-900 focus:outline-none focus:ring-1 focus:ring-primary-900 text-primary-900 placeholder-primary-400"
                 />
               </div>
             </div>
@@ -257,7 +257,7 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
                   name="ps_manager_name"
                   value={formData.ps_manager_name}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
+                  className="w-full px-3 py-2 border border-primary-900 focus:outline-none focus:ring-1 focus:ring-primary-900 text-primary-900 placeholder-primary-400"
                 />
               </div>
 
@@ -270,7 +270,7 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
                   name="owner_name"
                   value={formData.owner_name}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
+                  className="w-full px-3 py-2 border border-primary-900 focus:outline-none focus:ring-1 focus:ring-primary-900 text-primary-900 placeholder-primary-400"
                 />
               </div>
             </div>
@@ -284,7 +284,7 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
                   name="opportunity_type"
                   value={formData.opportunity_type}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
+                  className="w-full px-3 py-2 border border-primary-900 focus:outline-none focus:ring-1 focus:ring-primary-900 text-primary-900 placeholder-primary-400"
                 >
                   <option value="">Select Type</option>
                   {opportunityTypes.map(type => (
@@ -301,7 +301,7 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
                   name="forecast_category"
                   value={formData.forecast_category}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
+                  className="w-full px-3 py-2 border border-primary-900 focus:outline-none focus:ring-1 focus:ring-primary-900 text-primary-900 placeholder-primary-400"
                 >
                   <option value="">Select Category</option>
                   {forecastCategories.map(category => (

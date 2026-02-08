@@ -103,7 +103,7 @@ const DealsNeedingAttention = () => {
                   {deal.services_next_steps || '-'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary-100 text-primary-900">
+                  <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold border border-primary-900 bg-primary-100 text-primary-900">
                     {deal.stage_number || 'N/A'}
                   </span>
                 </td>
@@ -112,7 +112,7 @@ const DealsNeedingAttention = () => {
                     {deal.tags.map((tag, index) => (
                       <span
                         key={index}
-                        className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold border border-primary-900 ${
                           tag === 'Needs notes'
                             ? 'bg-primary-100 text-primary-900'
                             : 'bg-primary-200 text-primary-900'

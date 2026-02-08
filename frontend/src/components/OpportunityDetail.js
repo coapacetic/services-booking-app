@@ -53,11 +53,11 @@ const OpportunityDetail = ({ opportunity, onEdit, onClose }) => {
 
         {/* Key Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-primary-50 p-4 rounded-lg">
+          <div className="bg-primary-50 p-4 border border-primary-900">
             <p className="text-sm font-medium text-primary-600">Delta ARR</p>
             <p className="text-xl font-bold text-primary-900">{formatCurrency(opportunity.delta_average_arr)}</p>
           </div>
-          <div className="bg-primary-50 p-4 rounded-lg">
+          <div className="bg-primary-50 p-4 border border-primary-900">
             <p className="text-sm font-medium text-primary-600">Stage</p>
             <div className="mt-1">
               <span className={`px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full ${getStageColor(opportunity.stage_number)}`}>
@@ -65,7 +65,7 @@ const OpportunityDetail = ({ opportunity, onEdit, onClose }) => {
               </span>
             </div>
           </div>
-          <div className="bg-primary-50 p-4 rounded-lg">
+          <div className="bg-primary-50 p-4 border border-primary-900">
             <p className="text-sm font-medium text-primary-600">Services Amount</p>
             <p className="text-xl font-bold text-primary-900">{formatCurrency(opportunity.services_attached_amount)}</p>
           </div>
@@ -81,7 +81,7 @@ const OpportunityDetail = ({ opportunity, onEdit, onClose }) => {
                   <dt className="text-sm font-medium text-primary-600">{field.label}</dt>
                   <dd className="text-sm text-primary-900 text-right">
                     {field.isBadge ? (
-                      <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStageColor(field.value)}`}>
+                      <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold border border-primary-900 ${getStageColor(field.value)}`}>
                         {field.value}
                       </span>
                     ) : field.isColored ? (
@@ -114,7 +114,7 @@ const OpportunityDetail = ({ opportunity, onEdit, onClose }) => {
         {opportunity.services_next_steps && (
           <div className="mt-8">
             <h3 className="text-lg font-serif font-semibold text-primary-900 mb-4">Services Next Steps</h3>
-            <div className="bg-primary-50 p-4 rounded-lg">
+            <div className="bg-primary-50 p-4 border border-primary-900">
               <p className="text-primary-700 whitespace-pre-wrap">{opportunity.services_next_steps}</p>
             </div>
           </div>
