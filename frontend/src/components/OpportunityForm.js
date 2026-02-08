@@ -91,7 +91,7 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
     <div className="max-w-2xl mx-auto">
       <div className="card">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold text-gray-900">
+          <h2 className="text-xl font-bold text-primary-900">
             {isEditing ? 'Edit Opportunity' : 'Create New Opportunity'}
           </h2>
           <button
@@ -105,11 +105,11 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Information */}
           <div className="space-y-4">
-            <h3 className="text-lg font-medium text-gray-900">Basic Information</h3>
+            <h3 className="text-lg font-medium text-primary-900">Basic Information</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-primary-700 mb-1">
                   Opportunity ID *
                 </label>
                 <input
@@ -117,16 +117,16 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
                   name="opportunty_id"
                   value={formData.opportunty_id}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
                   disabled={isEditing}
                 />
                 {errors.opportunty_id && (
-                  <p className="mt-1 text-sm text-red-600">{errors.opportunty_id}</p>
+                  <p className="mt-1 text-sm text-primary-700">{errors.opportunty_id}</p>
                 )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-primary-700 mb-1">
                   Account ID *
                 </label>
                 <input
@@ -134,17 +134,17 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
                   name="account_id"
                   value={formData.account_id}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
                   disabled={isEditing}
                 />
                 {errors.account_id && (
-                  <p className="mt-1 text-sm text-red-600">{errors.account_id}</p>
+                  <p className="mt-1 text-sm text-primary-700">{errors.account_id}</p>
                 )}
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-primary-700 mb-1">
                 Opportunity Name *
               </label>
               <input
@@ -152,15 +152,15 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
                 name="opportunity_name"
                 value={formData.opportunity_name}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="w-full px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
               />
               {errors.opportunity_name && (
-                <p className="mt-1 text-sm text-red-600">{errors.opportunity_name}</p>
+                <p className="mt-1 text-sm text-primary-700">{errors.opportunity_name}</p>
               )}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-primary-700 mb-1">
                 Account Name
               </label>
               <input
@@ -168,13 +168,13 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
                 name="account_name"
                 value={formData.account_name}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="w-full px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-primary-700 mb-1">
                   Delta ARR
                 </label>
                 <input
@@ -184,15 +184,15 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
                   onChange={handleChange}
                   step="0.01"
                   placeholder="0.00"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
                 />
                 {errors.delta_average_arr && (
-                  <p className="mt-1 text-sm text-red-600">{errors.delta_average_arr}</p>
+                  <p className="mt-1 text-sm text-primary-700">{errors.delta_average_arr}</p>
                 )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-primary-700 mb-1">
                   Services Attached Amount
                 </label>
                 <input
@@ -202,10 +202,10 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
                   onChange={handleChange}
                   step="0.01"
                   placeholder="0.00"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
                 />
                 {errors.services_attached_amount && (
-                  <p className="mt-1 text-sm text-red-600">{errors.services_attached_amount}</p>
+                  <p className="mt-1 text-sm text-primary-700">{errors.services_attached_amount}</p>
                 )}
               </div>
             </div>
@@ -213,18 +213,18 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
 
           {/* Sales Information */}
           <div className="space-y-4">
-            <h3 className="text-lg font-medium text-gray-900">Sales Information</h3>
+            <h3 className="text-lg font-medium text-primary-900">Sales Information</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-primary-700 mb-1">
                   Stage Number
                 </label>
                 <select
                   name="stage_number"
                   value={formData.stage_number}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
                 >
                   <option value="">Select Stage</option>
                   {stageNumbers.map(stage => (
@@ -234,7 +234,7 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-primary-700 mb-1">
                   Close Date
                 </label>
                 <input
@@ -242,14 +242,14 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
                   name="close_date"
                   value={formData.close_date}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-primary-700 mb-1">
                   PS Manager Name
                 </label>
                 <input
@@ -257,12 +257,12 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
                   name="ps_manager_name"
                   value={formData.ps_manager_name}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-primary-700 mb-1">
                   Owner Name
                 </label>
                 <input
@@ -270,21 +270,21 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
                   name="owner_name"
                   value={formData.owner_name}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-primary-700 mb-1">
                   Opportunity Type
                 </label>
                 <select
                   name="opportunity_type"
                   value={formData.opportunity_type}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
                 >
                   <option value="">Select Type</option>
                   {opportunityTypes.map(type => (
@@ -294,14 +294,14 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-primary-700 mb-1">
                   Forecast Category
                 </label>
                 <select
                   name="forecast_category"
                   value={formData.forecast_category}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-primary-900 placeholder-primary-400"
                 >
                   <option value="">Select Category</option>
                   {forecastCategories.map(category => (
@@ -312,7 +312,7 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-primary-700 mb-1">
                 Services Next Steps
               </label>
               <textarea
@@ -320,7 +320,7 @@ const OpportunityForm = ({ opportunity, isEditing, onSubmit, onCancel }) => {
                 value={formData.services_next_steps}
                 onChange={handleChange}
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="w-full px-3 py-2 border-hairline border-primary-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
             </div>
           </div>

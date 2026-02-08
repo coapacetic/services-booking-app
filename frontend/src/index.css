@@ -17,7 +17,7 @@ code {
 }
 
 .card {
-  @apply bg-white rounded-lg shadow-md p-6;
+  @apply bg-white rounded-lg shadow-md p-6 border-hairline border-primary-200;
 }
 
 .btn {
@@ -25,9 +25,9 @@ code {
 }
 
 .btn-primary {
-  @apply bg-primary-600 text-white hover:bg-primary-700;
+  @apply bg-primary-900 text-white hover:bg-primary-800;
 }
 
 .btn-secondary {
-  @apply bg-gray-200 text-gray-800 hover:bg-gray-300;
+  @apply bg-white text-primary-900 border-hairline border-primary-300 hover:bg-primary-50;
 }

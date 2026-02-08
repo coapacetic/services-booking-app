@@ -30,21 +30,35 @@ export const formatDateTime = (dateTime) => {
 
 export const getStageColor = (stage) => {
   const stageColors = {
-    'Prospecting': 'bg-gray-100 text-gray-800',
-    'Qualification': 'bg-blue-100 text-blue-800',
-    'Needs Analysis': 'bg-indigo-100 text-indigo-800',
-    'Value Proposition': 'bg-purple-100 text-purple-800',
-    'Proposal/Price Quote': 'bg-yellow-100 text-yellow-800',
-    'Negotiation/Review': 'bg-orange-100 text-orange-800',
-    'Closed Won': 'bg-green-100 text-green-800',
-    'Closed Lost': 'bg-red-100 text-red-800',
+    'Prospecting': 'bg-primary-50 text-primary-900',
+    'Qualification': 'bg-primary-100 text-primary-900',
+    'Needs Analysis': 'bg-primary-200 text-primary-900',
+    'Value Proposition': 'bg-primary-300 text-primary-900',
+    'Proposal/Price Quote': 'bg-primary-400 text-white',
+    'Negotiation/Review': 'bg-primary-600 text-white',
+    'Closed Won': 'bg-primary-900 text-white',
+    'Closed Lost': 'bg-primary-400 text-white',
   };
-  return stageColors[stage] || 'bg-gray-100 text-gray-800';
+  return stageColors[stage] || 'bg-primary-100 text-primary-900';
 };
 
 export const getProbabilityColor = (probability) => {
-  if (probability >= 80) return 'text-green-600';
-  if (probability >= 60) return 'text-yellow-600';
-  if (probability >= 40) return 'text-orange-600';
-  return 'text-red-600';
+  if (probability >= 80) return 'text-primary-700';
+  if (probability >= 60) return 'text-primary-600';
+  if (probability >= 40) return 'text-primary-500';
+  return 'text-primary-400';
+};
+
+export const generateGrayscaleChartColors = (count = 8) => {
+  const colors = [
+    '#FAFAFA', // primary-50 (lightest)
+    '#F5F5F5', // primary-100
+    '#E5E5E5', // primary-200
+    '#D4D4D4', // primary-300
+    '#A3A3A3', // primary-400
+    '#737373', // primary-500
+    '#525252', // primary-600
+    '#171717', // primary-900 (darkest)
+  ];
+  return colors.slice(0, count);
 };
