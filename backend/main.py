@@ -1,14 +1,18 @@
-from fastapi import FastAPI, Depends, HTTPException, Query
+from fastapi import FastAPI, Depends, HTTPException, Query, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sqlalchemy import func
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from datetime import datetime, date
 import os
+import logging
 
 from database import SessionLocal, engine, Base
 from models import OpportunitySnapshot
 from schemas import OpportunitySnapshotCreate, OpportunitySnapshotResponse, OpportunityStats, DealNeedingAttentionResponse
+from snowflake_sync import sync_snowflake_to_postgres
+
+logger = logging.getLogger(__name__)
 
 Base.metadata.create_all(bind=engine)
 
@@ -263,6 +267,57 @@ def get_deals_needing_attention(db: Session = Depends(get_db)):
             deals_needing_attention.append(deal_data)
     
     return deals_needing_attention
+
+
+# Snowflake Sync Endpoints
+@app.post("/sync/snowflake")
+async def trigger_snowflake_sync(background_tasks: BackgroundTasks) -> Dict[str, Any]:
+    """
+    Trigger a sync from Snowflake to PostgreSQL
+
+    This endpoint starts a background task to:
+    1. Connect to Snowflake with Okta authentication
+    2. Fetch data from the configured Snowflake table
+    3. Upsert/update the data in PostgreSQL
+
+    Returns:
+        Status message indicating sync has been initiated
+    """
+    background_tasks.add_task(sync_snowflake_to_postgres)
+    return {
+        "status": "sync_initiated",
+        "message": "Snowflake sync has been initiated in the background",
+        "timestamp": datetime.now().isoformat()
+    }
+
+
+@app.get("/sync/snowflake/status")
+async def get_snowflake_sync_status() -> Dict[str, Any]:
+    """
+    Get the current status of Snowflake sync configuration
+
+    Returns:
+        Configuration status and environment variables (non-sensitive)
+    """
+    from snowflake_sync import (
+        SNOWFLAKE_ACCOUNT, SNOWFLAKE_DATABASE, SNOWFLAKE_SCHEMA, SNOWFLAKE_TABLE
+    )
+
+    is_configured = all([
+        SNOWFLAKE_ACCOUNT,
+        SNOWFLAKE_DATABASE,
+        SNOWFLAKE_TABLE
+    ])
+
+    return {
+        "configured": is_configured,
+        "account": SNOWFLAKE_ACCOUNT if SNOWFLAKE_ACCOUNT else "Not configured",
+        "database": SNOWFLAKE_DATABASE if SNOWFLAKE_DATABASE else "Not configured",
+        "schema": SNOWFLAKE_SCHEMA if SNOWFLAKE_SCHEMA else "PUBLIC",
+        "table": SNOWFLAKE_TABLE if SNOWFLAKE_TABLE else "Not configured",
+        "timestamp": datetime.now().isoformat()
+    }
+
 
 if __name__ == "__main__":
     import uvicorn
