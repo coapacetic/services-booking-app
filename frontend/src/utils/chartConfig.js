@@ -3,7 +3,7 @@ import Chart from 'chart.js/auto';
 // Configure Chart.js for grayscale theme
 Chart.defaults.color = '#525252'; // primary-600 for text
 Chart.defaults.borderColor = '#E5E5E5'; // primary-200 for borders
-Chart.defaults.backgroundColor = '#FAFAFA'; // primary-50 for backgrounds
+// Remove global backgroundColor to allow dataset-specific colors
 
 // Configure default options for all charts
 Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif";
