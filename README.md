@@ -32,47 +32,90 @@ A full-stack application for visualizing and managing Salesforce opportunity sna
 
 ## Quick Start
 
-### Using Docker Compose (Recommended)
+### Prerequisites
 
-1. Clone and navigate to the project:
+- Node.js 18+ and npm
+- Python 3.11+ and pip
+- PostgreSQL 15+
+
+### Step 1: Database Setup
+
+1. Install PostgreSQL if not already installed:
+   - **macOS**: `brew install postgresql@15`
+   - **Ubuntu**: `sudo apt-get install postgresql postgresql-contrib`
+   - **Windows**: Download from [postgresql.org](https://www.postgresql.org/download/)
+
+2. Start PostgreSQL service:
+   - **macOS**: `brew services start postgresql@15`
+   - **Ubuntu**: `sudo systemctl start postgresql`
+   - **Windows**: Services should start automatically after installation
+
+3. Create database and user:
 ```bash
-cd services-booking-app
+# Connect to PostgreSQL
+psql -U postgres
+
+# Create database and user
+CREATE DATABASE opportunity_db;
+CREATE USER coap WITH SUPERUSER;
+ALTER USER coap PASSWORD '';
+GRANT ALL PRIVILEGES ON DATABASE opportunity_db TO coap;
+\q
 ```
 
-2. Start all services:
+4. Initialize database schema:
 ```bash
-docker-compose up --build
+psql -h localhost -U coap -d opportunity_db -f database/init.sql
 ```
 
-3. Access the application:
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:8000
-- API Documentation: http://localhost:8000/docs
+### Step 2: Backend Setup
 
-### Manual Setup
-
-#### Backend Setup
 ```bash
 cd backend
 pip install -r requirements.txt
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-#### Frontend Setup
+The backend API will be available at http://localhost:8000
+
+### Step 3: Frontend Setup
+
 ```bash
 cd frontend
 npm install
 npm start
 ```
 
-#### Database Setup
-```bash
-# Start PostgreSQL
-docker run --name postgres -e POSTGRES_DB=opportunity_db -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres:15
+The frontend will be available at http://localhost:3000
 
-# Initialize database (optional - sample data included)
-psql -h localhost -U postgres -d opportunity_db -f database/init.sql
+### Access Points
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:8000
+- **API Documentation**: http://localhost:8000/docs
+
+### Quick Startup Scripts
+
+For convenience, use the provided startup scripts:
+
+```bash
+# Start database (run once)
+./scripts/start-database.sh
+
+# Reset database completely (clears all data)
+./scripts/reset-database.sh
+
+# Start backend (in new terminal)
+./scripts/start-backend.sh
+
+# Start frontend (in new terminal)
+./scripts/start-frontend.sh
 ```
+
+### Database Management
+
+- **Initial Setup**: Use `./scripts/start-database.sh` for first-time setup
+- **Complete Reset**: Use `./scripts/reset-database.sh` to clear all data and start fresh
+- **Schema Only**: The scripts automatically run `database/init.sql` to create tables and indexes
 
 ## API Endpoints
 
