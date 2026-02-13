@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatCurrency, formatDate, formatDateTime, getStageColor, getProbabilityColor } from '../utils/formatters';
+import { formatCurrency, formatDate, formatDateTime, getStageColor, getStageNumberColor, getProbabilityColor } from '../utils/formatters';
 import { PencilIcon, ArrowLeftIcon } from '@heroicons/react/24/outline';
 
 const OpportunityDetail = ({ opportunity, onEdit, onClose }) => {
@@ -60,7 +60,7 @@ const OpportunityDetail = ({ opportunity, onEdit, onClose }) => {
           <div className="bg-primary-50 p-4 border border-primary-900">
             <p className="text-sm font-medium text-primary-600">Stage</p>
             <div className="mt-1">
-              <span className={`px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full ${getStageColor(opportunity.stage_number)}`}>
+              <span className={`px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full border border-blue-900 ${getStageNumberColor(opportunity.stage_number)}`}>
                 {opportunity.stage_number || 'N/A'}
               </span>
             </div>
@@ -81,7 +81,7 @@ const OpportunityDetail = ({ opportunity, onEdit, onClose }) => {
                   <dt className="text-sm font-medium text-primary-600">{field.label}</dt>
                   <dd className="text-sm text-primary-900 text-right">
                     {field.isBadge ? (
-                      <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold border border-primary-900 ${getStageColor(field.value)}`}>
+                      <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold border border-blue-900 ${getStageNumberColor(field.value)}`}>
                         {field.value}
                       </span>
                     ) : field.isColored ? (

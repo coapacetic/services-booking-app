@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getOpportunityStats, getOpportunities } from '../services/api';
-import { formatCurrency, generateGrayscaleChartColors } from '../utils/formatters';
+import { formatCurrency, generateGrayscaleChartColors, generateBlueChartColors, getStageNumberColor, getStageChartColors } from '../utils/formatters';
 import '../utils/chartConfig';
 import DealsNeedingAttention from './DealsNeedingAttention';
 import {
@@ -68,14 +68,21 @@ const Dashboard = () => {
   // Prepare chart data
   const stageCount = Object.keys(stats.stage_distribution).length;
   const grayscaleColors = generateGrayscaleChartColors(stageCount);
+  const blueColors = generateBlueChartColors(stageCount);
+  const stageLabels = Object.keys(stats.stage_distribution);
+  const stageSpecificColors = getStageChartColors(stageLabels);
+  
+  // Debug: Log the colors to verify they're being generated correctly
+  console.log('Stage Labels:', stageLabels);
+  console.log('Stage Specific Colors:', stageSpecificColors);
 
   const stageData = {
-    labels: Object.keys(stats.stage_distribution),
+    labels: stageLabels,
     datasets: [
       {
         label: 'Opportunities by Stage',
         data: Object.values(stats.stage_distribution).map(stage => stage.count),
-        backgroundColor: grayscaleColors,
+        backgroundColor: stageSpecificColors,
         borderColor: '#FFFFFF',
         borderWidth: 1,
       },
@@ -83,13 +90,13 @@ const Dashboard = () => {
   };
 
   const amountData = {
-    labels: Object.keys(stats.stage_distribution),
+    labels: stageLabels,
     datasets: [
       {
         label: 'Total Amount by Stage',
         data: Object.values(stats.stage_distribution).map(stage => stage.total_amount),
-        backgroundColor: '#525252',
-        borderColor: '#A3A3A3',
+        backgroundColor: stageSpecificColors,
+        borderColor: '#FFFFFF',
         borderWidth: 0.5,
       },
     ],
@@ -118,8 +125,8 @@ const Dashboard = () => {
               <p className="text-2xl font-bold text-primary-900">{stats.total_opportunities}</p>
             </div>
             <div className="ml-4">
-              <div className="w-12 h-12 bg-primary-100 border border-primary-900 flex items-center justify-center">
-                <QueueListIcon className="h-6 w-6 text-primary-900" />
+              <div className="w-12 h-12 bg-blue-100 border border-blue-900 flex items-center justify-center">
+                <QueueListIcon className="h-6 w-6 text-blue-900" />
               </div>
             </div>
           </div>
@@ -132,8 +139,8 @@ const Dashboard = () => {
               <p className="text-2xl font-bold text-primary-900">{formatCurrency(stats.total_amount)}</p>
             </div>
             <div className="ml-4">
-              <div className="w-12 h-12 bg-primary-200 border border-primary-900 flex items-center justify-center">
-                <CurrencyDollarIcon className="h-6 w-6 text-primary-900" />
+              <div className="w-12 h-12 bg-blue-200 border border-blue-900 flex items-center justify-center">
+                <CurrencyDollarIcon className="h-6 w-6 text-blue-900" />
               </div>
             </div>
           </div>
@@ -146,8 +153,8 @@ const Dashboard = () => {
               <p className="text-2xl font-bold text-primary-900">{stats.total_opportunities_with_services}</p>
             </div>
             <div className="ml-4">
-              <div className="w-12 h-12 bg-primary-300 border border-primary-900 flex items-center justify-center">
-                <CheckBadgeIcon className="h-6 w-6 text-primary-900" />
+              <div className="w-12 h-12 bg-blue-300 border border-blue-900 flex items-center justify-center">
+                <CheckBadgeIcon className="h-6 w-6 text-blue-900" />
               </div>
             </div>
           </div>
@@ -162,7 +169,7 @@ const Dashboard = () => {
               </p>
             </div>
             <div className="ml-4">
-              <div className="w-12 h-12 bg-primary-400 border border-primary-900 flex items-center justify-center">
+              <div className="w-12 h-12 bg-blue-400 border border-blue-900 flex items-center justify-center">
                 <CalculatorIcon className="h-6 w-6 text-white" />
               </div>
             </div>
@@ -182,7 +189,7 @@ const Dashboard = () => {
               <p className="text-xs text-primary-500 mt-1">Opportunities with services / Total opportunities</p>
             </div>
             <div className="ml-4">
-              <div className="w-12 h-12 bg-primary-500 border border-primary-900 flex items-center justify-center">
+              <div className="w-12 h-12 bg-blue-500 border border-blue-900 flex items-center justify-center">
                 <CheckCircleIcon className="h-6 w-6 text-white" />
               </div>
             </div>
@@ -199,7 +206,7 @@ const Dashboard = () => {
               <p className="text-xs text-primary-500 mt-1">Services amount / Delta average ARR</p>
             </div>
             <div className="ml-4">
-              <div className="w-12 h-12 bg-primary-600 border border-primary-900 flex items-center justify-center">
+              <div className="w-12 h-12 bg-blue-600 border border-blue-900 flex items-center justify-center">
                 <SparklesIcon className="h-6 w-6 text-white" />
               </div>
             </div>
@@ -290,7 +297,7 @@ const Dashboard = () => {
                       {formatCurrency(opportunity.services_attached_amount)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold border border-primary-900 bg-primary-100 text-primary-900">
+                      <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold border border-blue-900 ${getStageNumberColor(opportunity.stage_number)}`}>
                         {opportunity.stage_number || 'N/A'}
                       </span>
                     </td>
@@ -350,7 +357,7 @@ const Dashboard = () => {
                     {formatCurrency(opportunity.delta_average_arr)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary-100 text-primary-900">
+                    <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold border border-blue-900 ${getStageNumberColor(opportunity.stage_number)}`}>
                       {opportunity.stage_number || 'N/A'}
                     </span>
                   </td>

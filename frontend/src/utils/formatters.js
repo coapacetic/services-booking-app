@@ -42,6 +42,21 @@ export const getStageColor = (stage) => {
   return stageColors[stage] || 'bg-primary-100 text-primary-900';
 };
 
+export const getStageNumberColor = (stageNumber) => {
+  const stageNum = parseInt(stageNumber, 10);
+  if (isNaN(stageNum)) return 'bg-blue-100 text-blue-900';
+  
+  const stageColors = {
+    1: 'bg-blue-100 text-blue-900',    // Lightest blue
+    2: 'bg-blue-200 text-blue-900',    // Light blue
+    3: 'bg-blue-300 text-blue-900',    // Medium light blue
+    4: 'bg-blue-400 text-white',       // Medium blue
+    5: 'bg-blue-600 text-white',       // Dark blue
+  };
+  
+  return stageColors[stageNum] || 'bg-blue-100 text-blue-900';
+};
+
 export const getProbabilityColor = (probability) => {
   if (probability >= 80) return 'text-primary-700';
   if (probability >= 60) return 'text-primary-600';
@@ -61,4 +76,44 @@ export const generateGrayscaleChartColors = (count = 8) => {
     '#171717', // primary-900 (darkest)
   ];
   return colors.slice(0, count);
+};
+
+export const generateBlueChartColors = (count = 8) => {
+  const colors = [
+    '#dbeafe', // blue-100 (Stage 1)
+    '#bfdbfe', // blue-200 (Stage 2)
+    '#93c5fd', // blue-300 (Stage 3)
+    '#60a5fa', // blue-400 (Stage 4)
+    '#2563eb', // blue-600 (Stage 5)
+    '#1e40af', // blue-800 (darker for additional stages)
+    '#1e3a8a', // blue-900 (darkest for additional stages)
+    '#eff6ff', // blue-50 (lightest for additional stages)
+  ];
+  return colors.slice(0, count);
+};
+
+export const getStageChartColors = (stageLabels) => {
+  const stageColorMap = {
+    // Numeric stages (from backend stage_distribution)
+    '1': '#dbeafe',      // blue-100 (Stage 1)
+    '2': '#bfdbfe',      // blue-200 (Stage 2)
+    '3': '#93c5fd',      // blue-300 (Stage 3)
+    '4': '#60a5fa',      // blue-400 (Stage 4)
+    '5': '#2563eb',      // blue-600 (Stage 5)
+    '6': '#1e40af',      // blue-800 (Stage 6)
+    '7': '#1e3a8a',      // blue-900 (Stage 7)
+    '8': '#dbeafe',      // blue-100 (reuse for Stage 8+)
+    
+    // Named stages (for future use)
+    'Prospecting': '#dbeafe',      // blue-100
+    'Qualification': '#bfdbfe',    // blue-200
+    'Needs Analysis': '#93c5fd',   // blue-300
+    'Value Proposition': '#60a5fa', // blue-400
+    'Proposal/Price Quote': '#2563eb', // blue-600
+    'Negotiation/Review': '#1e40af',   // blue-800
+    'Closed Won': '#1e3a8a',       // blue-900
+    'Closed Lost': '#dbeafe',      // blue-100 (reuse lightest)
+  };
+  
+  return stageLabels.map(stage => stageColorMap[stage] || '#dbeafe');
 };

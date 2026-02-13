@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getOpportunities, deleteOpportunity } from '../services/api';
-import { formatCurrency, formatDate, getStageColor } from '../utils/formatters';
+import { formatCurrency, formatDate, getStageColor, getStageNumberColor } from '../utils/formatters';
 import { PencilIcon, TrashIcon, EyeIcon } from '@heroicons/react/24/outline';
 
 const OpportunityTable = ({ onEdit, onView }) => {
@@ -151,7 +151,7 @@ const OpportunityTable = ({ onEdit, onView }) => {
                   {formatCurrency(opportunity.services_attached_amount)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold border border-primary-900 ${getStageColor(opportunity.stage_number)}`}>
+                  <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold border border-blue-900 ${getStageNumberColor(opportunity.stage_number)}`}>
                     {opportunity.stage_number || 'N/A'}
                   </span>
                 </td>
