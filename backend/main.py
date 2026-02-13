@@ -2,13 +2,16 @@ from fastapi import FastAPI, Depends, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sqlalchemy import func
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from datetime import datetime, date
 import os
+import logging
 
 from database import SessionLocal, engine, Base
 from models import OpportunitySnapshot
 from schemas import OpportunitySnapshotCreate, OpportunitySnapshotResponse, OpportunityStats, DealNeedingAttentionResponse
+
+logger = logging.getLogger(__name__)
 
 Base.metadata.create_all(bind=engine)
 
@@ -263,6 +266,9 @@ def get_deals_needing_attention(db: Session = Depends(get_db)):
             deals_needing_attention.append(deal_data)
     
     return deals_needing_attention
+
+
+
 
 if __name__ == "__main__":
     import uvicorn

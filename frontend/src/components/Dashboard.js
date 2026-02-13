@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getOpportunityStats, getOpportunities } from '../services/api';
-import { formatCurrency } from '../utils/formatters';
+import { formatCurrency, generateGrayscaleChartColors } from '../utils/formatters';
+import '../utils/chartConfig';
 import DealsNeedingAttention from './DealsNeedingAttention';
 import {
   Chart as ChartJS,
@@ -13,6 +14,14 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar, Pie } from 'react-chartjs-2';
+import {
+  QueueListIcon,
+  CurrencyDollarIcon,
+  CheckBadgeIcon,
+  CalculatorIcon,
+  CheckCircleIcon,
+  SparklesIcon,
+} from '@heroicons/react/24/outline';
 
 ChartJS.register(
   CategoryScale,
@@ -57,23 +66,18 @@ const Dashboard = () => {
   }
 
   // Prepare chart data
+  const stageCount = Object.keys(stats.stage_distribution).length;
+  const grayscaleColors = generateGrayscaleChartColors(stageCount);
+
   const stageData = {
     labels: Object.keys(stats.stage_distribution),
     datasets: [
       {
         label: 'Opportunities by Stage',
         data: Object.values(stats.stage_distribution).map(stage => stage.count),
-        backgroundColor: [
-          '#3B82F6',
-          '#10B981',
-          '#F59E0B',
-          '#EF4444',
-          '#8B5CF6',
-          '#EC4899',
-          '#14B8A6',
-          '#F97316',
-        ],
-        borderWidth: 0,
+        backgroundColor: grayscaleColors,
+        borderColor: '#FFFFFF',
+        borderWidth: 1,
       },
     ],
   };
@@ -84,9 +88,9 @@ const Dashboard = () => {
       {
         label: 'Total Amount by Stage',
         data: Object.values(stats.stage_distribution).map(stage => stage.total_amount),
-        backgroundColor: '#3B82F6',
-        borderColor: '#1D4ED8',
-        borderWidth: 1,
+        backgroundColor: '#525252',
+        borderColor: '#A3A3A3',
+        borderWidth: 0.5,
       },
     ],
   };
@@ -110,12 +114,12 @@ const Dashboard = () => {
         <div className="card">
           <div className="flex items-center">
             <div className="flex-1">
-              <p className="text-sm font-medium text-gray-600">Total Opportunities</p>
-              <p className="text-2xl font-bold text-gray-900">{stats.total_opportunities}</p>
+              <p className="text-sm font-medium text-primary-600">Total Opportunities</p>
+              <p className="text-2xl font-bold text-primary-900">{stats.total_opportunities}</p>
             </div>
             <div className="ml-4">
-              <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
-                <span className="text-primary-600 font-bold">📊</span>
+              <div className="w-12 h-12 bg-primary-100 border border-primary-900 flex items-center justify-center">
+                <QueueListIcon className="h-6 w-6 text-primary-900" />
               </div>
             </div>
           </div>
@@ -124,12 +128,12 @@ const Dashboard = () => {
         <div className="card">
           <div className="flex items-center">
             <div className="flex-1">
-              <p className="text-sm font-medium text-gray-600">Total Pipeline Value</p>
-              <p className="text-2xl font-bold text-gray-900">{formatCurrency(stats.total_amount)}</p>
+              <p className="text-sm font-medium text-primary-600">Total Pipeline Value</p>
+              <p className="text-2xl font-bold text-primary-900">{formatCurrency(stats.total_amount)}</p>
             </div>
             <div className="ml-4">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                <span className="text-green-600 font-bold">💰</span>
+              <div className="w-12 h-12 bg-primary-200 border border-primary-900 flex items-center justify-center">
+                <CurrencyDollarIcon className="h-6 w-6 text-primary-900" />
               </div>
             </div>
           </div>
@@ -138,12 +142,12 @@ const Dashboard = () => {
         <div className="card">
           <div className="flex items-center">
             <div className="flex-1">
-              <p className="text-sm font-medium text-gray-600">Total Opps with Services</p>
-              <p className="text-2xl font-bold text-gray-900">{stats.total_opportunities_with_services}</p>
+              <p className="text-sm font-medium text-primary-600">Total Opps with Services</p>
+              <p className="text-2xl font-bold text-primary-900">{stats.total_opportunities_with_services}</p>
             </div>
             <div className="ml-4">
-              <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
-                <span className="text-yellow-600 font-bold">📈</span>
+              <div className="w-12 h-12 bg-primary-300 border border-primary-900 flex items-center justify-center">
+                <CheckBadgeIcon className="h-6 w-6 text-primary-900" />
               </div>
             </div>
           </div>
@@ -152,14 +156,14 @@ const Dashboard = () => {
         <div className="card">
           <div className="flex items-center">
             <div className="flex-1">
-              <p className="text-sm font-medium text-gray-600">Total Services Amount</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-sm font-medium text-primary-600">Total Services Amount</p>
+              <p className="text-2xl font-bold text-primary-900">
                 {formatCurrency(stats.total_services_amount)}
               </p>
             </div>
             <div className="ml-4">
-              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                <span className="text-purple-600 font-bold">📋</span>
+              <div className="w-12 h-12 bg-primary-400 border border-primary-900 flex items-center justify-center">
+                <CalculatorIcon className="h-6 w-6 text-white" />
               </div>
             </div>
           </div>
@@ -171,15 +175,15 @@ const Dashboard = () => {
         <div className="card">
           <div className="flex items-center">
             <div className="flex-1">
-              <p className="text-sm font-medium text-gray-600">Services Logo Attach Rate (Stage 3+)</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-sm font-medium text-primary-600">Services Logo Attach Rate (Stage 3+)</p>
+              <p className="text-2xl font-bold text-primary-900">
                 {stats.services_logo_attach_rate?.toFixed(1) ?? '0.0'}%
               </p>
-              <p className="text-xs text-gray-500 mt-1">Opportunities with services / Total opportunities</p>
+              <p className="text-xs text-primary-500 mt-1">Opportunities with services / Total opportunities</p>
             </div>
             <div className="ml-4">
-              <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center">
-                <span className="text-indigo-600 font-bold">🎯</span>
+              <div className="w-12 h-12 bg-primary-500 border border-primary-900 flex items-center justify-center">
+                <CheckCircleIcon className="h-6 w-6 text-white" />
               </div>
             </div>
           </div>
@@ -188,15 +192,15 @@ const Dashboard = () => {
         <div className="card">
           <div className="flex items-center">
             <div className="flex-1">
-              <p className="text-sm font-medium text-gray-600">Services Dollar Attach Rate (Stage 3+)</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-sm font-medium text-primary-600">Services Dollar Attach Rate (Stage 3+)</p>
+              <p className="text-2xl font-bold text-primary-900">
                 {stats.services_dollar_attach_rate?.toFixed(1) ?? '0.0'}%
               </p>
-              <p className="text-xs text-gray-500 mt-1">Services amount / Delta average ARR</p>
+              <p className="text-xs text-primary-500 mt-1">Services amount / Delta average ARR</p>
             </div>
             <div className="ml-4">
-              <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center">
-                <span className="text-teal-600 font-bold">💵</span>
+              <div className="w-12 h-12 bg-primary-600 border border-primary-900 flex items-center justify-center">
+                <SparklesIcon className="h-6 w-6 text-white" />
               </div>
             </div>
           </div>
@@ -206,30 +210,43 @@ const Dashboard = () => {
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="card">
-          <h3 className="text-lg font-semibold mb-4">Opportunities by Stage</h3>
+          <h3 className="text-lg font-serif font-semibold text-primary-900 mb-4">Opportunities by Stage</h3>
           <div className="h-64">
             <Pie data={stageData} options={{ maintainAspectRatio: false }} />
           </div>
         </div>
 
         <div className="card">
-          <h3 className="text-lg font-semibold mb-4">Pipeline Value by Stage</h3>
+          <h3 className="text-lg font-serif font-semibold text-primary-900 mb-4">Pipeline Value by Stage</h3>
           <div className="h-64">
-            <Bar 
-              data={amountData} 
-              options={{ 
+            <Bar
+              data={amountData}
+              options={{
                 maintainAspectRatio: false,
                 scales: {
                   y: {
                     beginAtZero: true,
+                    grid: {
+                      color: '#E5E5E5',
+                      drawBorder: false,
+                    },
                     ticks: {
+                      color: '#525252',
                       callback: function(value) {
                         return formatCurrency(value);
                       }
                     }
+                  },
+                  x: {
+                    grid: {
+                      display: false,
+                    },
+                    ticks: {
+                      color: '#525252',
+                    }
                   }
                 }
-              }} 
+              }}
             />
           </div>
         </div>
@@ -237,54 +254,54 @@ const Dashboard = () => {
 
       {/* Top Deals */}
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Top Deals</h3>
+        <h3 className="text-lg font-serif font-semibold text-primary-900 mb-4">Top Deals</h3>
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-primary-200">
+            <thead className="bg-primary-50 border-y border-hairline border-primary-200">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Opportunity Name
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Delta Average ARR
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Services Amount
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Stage
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Services Next Steps
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white divide-y divide-primary-200">
               {topDeals.length > 0 ? (
                 topDeals.map((opportunity) => (
-                  <tr key={opportunity.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  <tr key={opportunity.id} className="hover:bg-primary-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary-900">
                       {opportunity.opportunity_name}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-600">
                       {formatCurrency(opportunity.delta_average_arr)}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-600">
                       {formatCurrency(opportunity.services_attached_amount)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                      <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold border border-primary-900 bg-primary-100 text-primary-900">
                         {opportunity.stage_number || 'N/A'}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-500">
+                    <td className="px-6 py-4 text-sm text-primary-600">
                       {opportunity.services_next_steps || 'N/A'}
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="5" className="px-6 py-4 text-center text-sm text-gray-500">
+                  <td colSpan="5" className="px-6 py-4 text-center text-sm text-primary-600">
                     No deals in stage 3 or later
                   </td>
                 </tr>
@@ -298,46 +315,46 @@ const Dashboard = () => {
       <DealsNeedingAttention />
       {/* Recent Opportunities */}
       <div className="card">
-        <h3 className="text-lg font-semibold mb-4">Recent Opportunities</h3>
+        <h3 className="text-lg font-serif font-semibold text-primary-900 mb-4">Recent Opportunities</h3>
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+          <table className="min-w-full divide-y divide-primary-200">
+            <thead className="bg-primary-50 border-y border-hairline border-primary-200">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Name
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Account
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Delta ARR
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Stage
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                   Last Sync
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white divide-y divide-primary-200">
               {recentOpportunities.map((opportunity) => (
-                <tr key={opportunity.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                <tr key={opportunity.id} className="hover:bg-primary-50">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary-900">
                     {opportunity.opportunity_name}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-600">
                     {opportunity.account_name || 'N/A'}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-600">
                     {formatCurrency(opportunity.delta_average_arr)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                    <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary-100 text-primary-900">
                       {opportunity.stage_number || 'N/A'}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-600">
                     {new Date(opportunity._sync_timestamp).toLocaleDateString()}
                   </td>
                 </tr>

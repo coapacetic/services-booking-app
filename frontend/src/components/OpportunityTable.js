@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getOpportunities, deleteOpportunity } from '../services/api';
-import { formatCurrency, formatDate, getStageColor, getProbabilityColor } from '../utils/formatters';
+import { formatCurrency, formatDate, getStageColor } from '../utils/formatters';
 import { PencilIcon, TrashIcon, EyeIcon } from '@heroicons/react/24/outline';
 
 const OpportunityTable = ({ onEdit, onView }) => {
@@ -56,14 +56,14 @@ const OpportunityTable = ({ onEdit, onView }) => {
     }
   };
 
-  if (loading) return <div className="text-center py-8">Loading opportunities...</div>;
-  if (error) return <div className="text-red-600 text-center py-8">{error}</div>;
+  if (loading) return <div className="text-center py-8 text-primary-600">Loading opportunities...</div>;
+  if (error) return <div className="text-primary-700 text-center py-8">{error}</div>;
 
   return (
     <div className="space-y-6">
       {/* Filters */}
       <form onSubmit={handleFilterSubmit} className="card">
-        <h3 className="text-lg font-semibold mb-4">Filter Opportunities</h3>
+        <h3 className="text-lg font-serif font-semibold text-primary-900 mb-4">Filter Opportunities</h3>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <input
             type="text"
@@ -71,7 +71,7 @@ const OpportunityTable = ({ onEdit, onView }) => {
             placeholder="Stage"
             value={filters.stage}
             onChange={handleFilterChange}
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+            className="px-3 py-2 border border-primary-900 focus:outline-none focus:ring-1 focus:ring-primary-900 text-primary-900 placeholder-primary-400"
           />
           <input
             type="text"
@@ -79,7 +79,7 @@ const OpportunityTable = ({ onEdit, onView }) => {
             placeholder="Account Name"
             value={filters.account_name}
             onChange={handleFilterChange}
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+            className="px-3 py-2 border border-primary-900 focus:outline-none focus:ring-1 focus:ring-primary-900 text-primary-900 placeholder-primary-400"
           />
           <input
             type="number"
@@ -87,7 +87,7 @@ const OpportunityTable = ({ onEdit, onView }) => {
             placeholder="Min Amount"
             value={filters.min_amount}
             onChange={handleFilterChange}
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+            className="px-3 py-2 border border-primary-900 focus:outline-none focus:ring-1 focus:ring-primary-900 text-primary-900 placeholder-primary-400"
           />
           <input
             type="number"
@@ -95,7 +95,7 @@ const OpportunityTable = ({ onEdit, onView }) => {
             placeholder="Max Amount"
             value={filters.max_amount}
             onChange={handleFilterChange}
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+            className="px-3 py-2 border border-primary-900 focus:outline-none focus:ring-1 focus:ring-primary-900 text-primary-900 placeholder-primary-400"
           />
         </div>
         <button type="submit" className="btn btn-primary mt-4">
@@ -105,60 +105,60 @@ const OpportunityTable = ({ onEdit, onView }) => {
 
       {/* Table */}
       <div className="card overflow-x-auto">
-        <h3 className="text-lg font-semibold mb-4">Opportunities ({opportunities.length})</h3>
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+        <h3 className="text-lg font-serif font-semibold text-primary-900 mb-4">Opportunities ({opportunities.length})</h3>
+        <table className="min-w-full divide-y divide-primary-200">
+          <thead className="bg-primary-50 border-y border-hairline border-primary-200">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                 Name
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                 Account
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                 Delta ARR
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                 Services Amount
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                 Stage
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                 Close Date
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                 Owner
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-primary-600 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-white divide-y divide-primary-200">
             {opportunities.map((opportunity) => (
-              <tr key={opportunity.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+              <tr key={opportunity.id} className="hover:bg-primary-50">
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-primary-900">
                   {opportunity.opportunity_name}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-600">
                   {opportunity.account_name || 'N/A'}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-600">
                   {formatCurrency(opportunity.delta_average_arr)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-600">
                   {formatCurrency(opportunity.services_attached_amount)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStageColor(opportunity.stage_number)}`}>
+                  <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold border border-primary-900 ${getStageColor(opportunity.stage_number)}`}>
                     {opportunity.stage_number || 'N/A'}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-600">
                   {formatDate(opportunity.close_date)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-primary-600">
                   {opportunity.owner_name || 'N/A'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
@@ -170,13 +170,13 @@ const OpportunityTable = ({ onEdit, onView }) => {
                   </button>
                   <button
                     onClick={() => onEdit(opportunity)}
-                    className="text-indigo-600 hover:text-indigo-900"
+                    className="text-primary-600 hover:text-primary-900"
                   >
                     <PencilIcon className="h-5 w-5" />
                   </button>
                   <button
                     onClick={() => handleDelete(opportunity.opportunty_id)}
-                    className="text-red-600 hover:text-red-900"
+                    className="text-primary-600 hover:text-primary-900"
                   >
                     <TrashIcon className="h-5 w-5" />
                   </button>
@@ -186,7 +186,7 @@ const OpportunityTable = ({ onEdit, onView }) => {
           </tbody>
         </table>
         {opportunities.length === 0 && (
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-8 text-primary-600">
             No opportunities found
           </div>
         )}
