@@ -1,9 +1,12 @@
 from fastapi import FastAPI, Depends, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from typing import List, Optional, Dict, Any
 from datetime import datetime, date
+import csv
+import io
 import os
 import logging
 
@@ -267,7 +270,66 @@ def get_deals_needing_attention(db: Session = Depends(get_db)):
     
     return deals_needing_attention
 
+@app.get("/deals-needing-attention/export")
+def export_deals_needing_attention(db: Session = Depends(get_db)):
+    MIN_ARR = 100000
+    MIN_STAGE = 3
 
+    query = db.query(OpportunitySnapshot).filter(
+        OpportunitySnapshot.delta_average_arr >= MIN_ARR
+    )
+
+    all_opportunities = query.all()
+
+    deals = []
+    for opp in all_opportunities:
+        try:
+            stage_num = int(opp.stage_number) if opp.stage_number else 0
+        except (ValueError, TypeError):
+            stage_num = 0
+
+        if stage_num < MIN_STAGE:
+            continue
+
+        tags = []
+        needs_notes = not opp.services_next_steps or opp.services_next_steps.strip() == ""
+        if needs_notes:
+            tags.append("Needs notes")
+        needs_services = not opp.services_attached_amount or float(opp.services_attached_amount) <= 0
+        if needs_services:
+            tags.append("Needs services")
+
+        if tags:
+            deals.append({
+                "Opportunity ID": opp.opportunty_id,
+                "Opportunity Name": opp.opportunity_name,
+                "Account Name": opp.account_name or "",
+                "Delta Average ARR": str(opp.delta_average_arr) if opp.delta_average_arr else "0",
+                "Services Attached Amount": str(opp.services_attached_amount) if opp.services_attached_amount else "0",
+                "Stage": opp.stage_number or "",
+                "Forecast Category": opp.forecast_category or "",
+                "Services Next Steps": opp.services_next_steps or "",
+                "Owner": opp.owner_name or "",
+                "PS Manager": opp.ps_manager_name or "",
+                "Close Date": str(opp.close_date) if opp.close_date else "",
+                "Tags": "; ".join(tags),
+            })
+
+    output = io.StringIO()
+    if deals:
+        writer = csv.DictWriter(output, fieldnames=deals[0].keys())
+        writer.writeheader()
+        writer.writerows(deals)
+    else:
+        writer = csv.writer(output)
+        writer.writerow(["No deals needing attention"])
+
+    output.seek(0)
+    return StreamingResponse(
+        iter([output.getvalue()]),
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=deals_needing_attention.csv"},
+    )
 
 
 if __name__ == "__main__":

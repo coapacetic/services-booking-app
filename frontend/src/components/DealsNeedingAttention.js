@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getDealsNeedingAttention } from '../services/api';
 import { formatCurrency, getStageNumberColor } from '../utils/formatters';
+import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 
 const DealsNeedingAttention = () => {
   const [deals, setDeals] = useState([]);
@@ -52,17 +53,33 @@ const DealsNeedingAttention = () => {
     );
   }
 
+  const handleExportCSV = () => {
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+    window.open(`${apiUrl}/deals-needing-attention/export`, '_blank');
+  };
+
   return (
     <div className="card">
-      <h3 className="text-lg font-serif font-semibold text-primary-900 mb-4">
-        Deals Needing Attention
-        <span className="ml-2 text-sm font-normal text-primary-600">
-          ({deals.length} deal{deals.length !== 1 ? 's' : ''})
-        </span>
-      </h3>
-      <p className="text-sm text-primary-600 mb-4">
-        Stage 3+ deals with $100K+ ARR that need notes or services
-      </p>
+      <div className="flex justify-between items-start mb-4">
+        <div>
+          <h3 className="text-lg font-serif font-semibold text-primary-900">
+            Deals Needing Attention
+            <span className="ml-2 text-sm font-normal text-primary-600">
+              ({deals.length} deal{deals.length !== 1 ? 's' : ''})
+            </span>
+          </h3>
+          <p className="text-sm text-primary-600 mt-1">
+            Stage 3+ deals with $100K+ ARR that need notes or services
+          </p>
+        </div>
+        <button
+          onClick={handleExportCSV}
+          className="btn btn-primary inline-flex items-center text-sm"
+        >
+          <ArrowDownTrayIcon className="h-4 w-4 mr-1" />
+          Export CSV
+        </button>
+      </div>
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-primary-200">
           <thead className="bg-primary-50 border-y border-hairline border-primary-200">
